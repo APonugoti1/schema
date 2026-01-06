@@ -514,6 +514,10 @@
       "readOnly": true,
       "default": 0,
       "propertyOrder": 4.3,
+      "watch": {
+        "geoms": "root.buildGeometries"
+      },
+      "template": "{{sumGeometryCounts geoms}}",
       "options": {
         "grid_columns": 3
       }
@@ -522,18 +526,22 @@
       "title": "Sets × Parts Matrix",
       "description": "m rows (sets) × n columns (total parts). Check or uncheck each cell.",
       "type": "array",
+      "format": "table",
       "items": {
+        "type": "object",
         "headerTemplate": "Set {{i1}}",
-        "type": "array",
-        "items": {
-          "type": "boolean",
-          "format": "checkbox"
+        "properties": {},
+        "additionalProperties": {
+          "type": "boolean"
         }
       },
       "propertyOrder": 4.4,
       "default": [],
       "options": {
-        "grid_columns": 12
+        "grid_columns": 12,
+        "table": {
+          "columns": []
+        }
       }
     },
     "extraInfo": {

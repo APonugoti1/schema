@@ -1,9 +1,9 @@
 Handlebars.registerHelper('replaceAll', function (string, search, replacement) {
     return (string !== undefined && string !== null) ? string.replaceAll(search, replacement) : '';
 });
+
 Handlebars.registerHelper('joinarray', function (a, sep, prefix=false) {
     if (!a || !Array.isArray(a) || a.length === 0) {
-        // Handle empty or undefined array
         return '';
     }
     const result = a.join(sep);
@@ -12,6 +12,7 @@ Handlebars.registerHelper('joinarray', function (a, sep, prefix=false) {
     }
     return result;
 });
+
 Handlebars.registerHelper('sumGeometryCounts', function (geoms) {
     if (!geoms || !Array.isArray(geoms) || geoms.length === 0) {
         return 0;
@@ -19,122 +20,119 @@ Handlebars.registerHelper('sumGeometryCounts', function (geoms) {
     return geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
 });
 
-// Global variable to store the matrix data
-let globalSetsMatrix = [];
+// Global storage for matrix data
+let formInstance = null;
+let matrixData = {};
 
-// Function to handle the populate sets logic
-function populateMatrix(form) {
-    // Get current form data
-    const data = (typeof form.getValue === 'function') ? form.getValue() : (form.data || {});
-    const geoms = data.buildGeometries || [];
+// Main function to generate the matrix
+window.generateMatrix = function(form) {
+    formInstance = form;
     
-    // Calculate total counts from all geometries by summing their count properties
-    const totalCounts = geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
+    // Get form data
+    let data;
+    if (typeof form.getValue === 'function') {
+        try {
+            data = form.getValue();
+        } catch(e) {
+            data = form.data || {};
+        }
+    } else {
+        data = form.data || {};
+    }
     
-    // Get number of sets from user input
-    const numSets = Math.max(1, Number(data.setNumber) || 1);
+    const buildGeometries = data.buildGeometries || [];
+    const setNumber = Math.max(1, Number(data.setNumber) || 1);
+    
+    // Calculate total counts from geometries
+    const totalCounts = buildGeometries.reduce((sum, geom) => {
+        return sum + (Number(geom.count) || 0);
+    }, 0);
     
     if (totalCounts === 0) {
-        console.error('Total counts is 0. Please add geometries with counts.');
+        alert('Error: No geometries with counts found. Please add at least one geometry with a count.');
         return;
     }
     
-    // Build m × n matrix: array of objects where each object represents a row
-    // m = numSets (rows), n = totalCounts (columns)
-    // Each row object has properties: "Part 1", "Part 2", ..., "Part n" with boolean values
-    const setsMatrix = [];
-    for (let i = 0; i < numSets; i++) {
-        const row = {};
-        for (let j = 1; j <= totalCounts; j++) {
-            row[`Part ${j}`] = false;
+    // Create matrix data structure
+    matrixData = {};
+    for (let i = 0; i < setNumber; i++) {
+        matrixData[`set_${i}`] = {};
+        for (let j = 0; j < totalCounts; j++) {
+            matrixData[`set_${i}`][`part_${j}`] = false;
         }
-        setsMatrix.push(row);
     }
     
-    globalSetsMatrix = setsMatrix;
+    // Generate HTML table
+    let html = '<div style="overflow-x: auto; margin: 20px 0; border: 2px solid #333; padding: 10px; border-radius: 4px;">';
+    html += '<table style="border-collapse: collapse; font-family: Arial, sans-serif;">';
     
-    // Generate HTML table with checkboxes
-    let html = '<div style="overflow-x: auto; margin-top: 10px;"><table style="border-collapse: collapse; border: 2px solid #333;">';
-    
-    // Create header row with Part 1, Part 2, ... Part n
-    html += '<tr style="background-color: #e8e8e8;">';
-    html += '<th style="border: 1px solid #999; padding: 10px; font-weight: bold; min-width: 60px;">Set</th>';
-    for (let j = 1; j <= totalCounts; j++) {
-        html += `<th style="border: 1px solid #999; padding: 8px; text-align: center; font-weight: bold; min-width: 40px;">P${j}</th>`;
+    // Header row
+    html += '<tr style="background-color: #4CAF50; color: white;">';
+    html += '<th style="border: 1px solid #333; padding: 12px; font-weight: bold; text-align: center; min-width: 70px;">Set</th>';
+    for (let j = 0; j < totalCounts; j++) {
+        html += `<th style="border: 1px solid #333; padding: 8px; text-align: center; font-weight: bold; min-width: 45px; font-size: 12px;">P${j + 1}</th>`;
     }
     html += '</tr>';
     
-    // Create rows for each set with checkboxes
-    for (let i = 0; i < numSets; i++) {
-        html += '<tr>';
-        html += `<td style="border: 1px solid #999; padding: 10px; font-weight: bold; background-color: #f5f5f5; min-width: 60px;">Set ${i + 1}</td>`;
-        for (let j = 1; j <= totalCounts; j++) {
-            const checkboxId = `checkbox_set${i}_part${j}`;
-            html += `<td style="border: 1px solid #999; padding: 8px; text-align: center; background-color: white;">
-                <input type="checkbox" id="${checkboxId}" name="setsMatrix_${i}_${j}" data-set="${i}" data-part="${j}" style="width: 18px; height: 18px; cursor: pointer;">
+    // Data rows with checkboxes
+    for (let i = 0; i < setNumber; i++) {
+        html += `<tr style="background-color: ${i % 2 === 0 ? '#f9f9f9' : '#ffffff'};">`;
+        html += `<td style="border: 1px solid #333; padding: 12px; font-weight: bold; background-color: #e8f5e9; text-align: center;">Set ${i + 1}</td>`;
+        
+        for (let j = 0; j < totalCounts; j++) {
+            const checkboxId = `matrix_set${i}_part${j}`;
+            html += `<td style="border: 1px solid #333; padding: 10px; text-align: center;">
+                <input type="checkbox" 
+                       id="${checkboxId}" 
+                       data-set="${i}" 
+                       data-part="${j}" 
+                       style="width: 20px; height: 20px; cursor: pointer;" 
+                       onchange="window.onMatrixCheckboxChange(this)">
             </td>`;
         }
         html += '</tr>';
     }
     
-    html += '</table></div>';
+    html += '</table>';
+    html += '</div>';
     
-    // Write values back to form
-    if (typeof form.setValue === 'function') {
-        form.setValue('totalCounts', totalCounts);
-        form.setValue('setsMatrixData', setsMatrix);
-        form.setValue('setsMatrix', html);
-    } else if (form.data) {
-        form.data.totalCounts = totalCounts;
-        form.data.setsMatrixData = setsMatrix;
-        form.data.setsMatrix = html;
-        if (typeof form.render === 'function') {
-            form.render();
+    // Update form fields
+    updateFormField(form, 'totalCounts', totalCounts);
+    updateFormField(form, 'setsMatrixData', JSON.stringify(matrixData));
+    updateFormField(form, 'setsMatrix', html);
+    
+    // Re-render if needed
+    if (typeof form.render === 'function') {
+        setTimeout(() => form.render(), 100);
+    }
+};
+
+// Handle checkbox changes
+window.onMatrixCheckboxChange = function(checkbox) {
+    const setIdx = parseInt(checkbox.dataset.set);
+    const partIdx = parseInt(checkbox.dataset.part);
+    
+    if (matrixData[`set_${setIdx}`]) {
+        matrixData[`set_${setIdx}`][`part_${partIdx}`] = checkbox.checked;
+        
+        // Update form data
+        if (formInstance) {
+            updateFormField(formInstance, 'setsMatrixData', JSON.stringify(matrixData));
         }
     }
-    
-    // Attach event listeners to checkboxes after rendering
-    setTimeout(() => {
-        const checkboxes = document.querySelectorAll('input[name^="setsMatrix_"]');
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener('change', function() {
-                const setIdx = parseInt(this.dataset.set);
-                const partIdx = parseInt(this.dataset.part);
-                if (globalSetsMatrix[setIdx]) {
-                    const partKey = `Part ${partIdx}`;
-                    globalSetsMatrix[setIdx][partKey] = this.checked;
-                    // Update the hidden data field
-                    if (typeof form.setValue === 'function') {
-                        form.setValue('setsMatrixData', globalSetsMatrix);
-                    } else if (form.data) {
-                        form.data.setsMatrixData = globalSetsMatrix;
-                    }
-                }
-            });
-        });
-    }, 100);
-}
-
-// Watch for populateSets checkbox change and trigger matrix generation
-window.addEventListener('load', function() {
-    const observer = new MutationObserver(function(mutations) {
-        // Check if populateSets checkbox exists and is checked
-        const populateSetsCheckbox = document.querySelector('input[name="populateSets"]');
-        if (populateSetsCheckbox && populateSetsCheckbox.checked) {
-            // Get form instance from the document
-            if (window.currentForm) {
-                populateMatrix(window.currentForm);
-            }
-            // Uncheck it after processing
-            populateSetsCheckbox.checked = false;
-        }
-    });
-    
-    observer.observe(document.body, { subtree: true, attributes: true });
-});
-
-// Callback for when populateSets value changes
-window.populateSetsCB = function (form) {
-    window.currentForm = form;
-    populateMatrix(form);
 };
+
+// Helper function to update form fields
+function updateFormField(form, fieldName, value) {
+    if (typeof form.setValue === 'function') {
+        try {
+            form.setValue(fieldName, value);
+        } catch(e) {
+            if (form.data) {
+                form.data[fieldName] = value;
+            }
+        }
+    } else if (form.data) {
+        form.data[fieldName] = value;
+    }
+}

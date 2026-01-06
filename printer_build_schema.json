@@ -498,11 +498,14 @@
     "populateSets": {
       "title": "Generate Sets Matrix",
       "description": "Click to create m×n checkbox matrix",
-      "type": "boolean",
-      "default": false,
+      "type": "null",
       "propertyOrder": 4.2,
       "options": {
-        "grid_columns": 3
+        "grid_columns": 3,
+        "button": {
+          "title": "Generate Sets Matrix",
+          "action": "generateMatrix"
+        }
       }
     },
     "totalCounts": {

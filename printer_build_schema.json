@@ -520,26 +520,21 @@
     },
     "setsMatrix": {
       "title": "Sets × Parts Matrix",
-      "description": "m rows (sets) × n columns (parts). Each cell is a checkbox.",
+      "description": "m rows (sets) × n columns (total parts). Check or uncheck each cell.",
       "type": "array",
-      "format": "grid",
       "items": {
         "headerTemplate": "Set {{i1}}",
-        "type": "object",
-        "properties": {
-          "row": {
-            "type": "array",
-            "items": {
-              "type": "boolean"
-            },
-            "options": {
-              "grid_columns": 12
-            }
-          }
+        "type": "array",
+        "items": {
+          "type": "boolean",
+          "format": "checkbox"
         }
       },
       "propertyOrder": 4.4,
-      "default": []
+      "default": [],
+      "options": {
+        "grid_columns": 12
+      }
     },
     "extraInfo": {
       "title": "Extraneous Information",

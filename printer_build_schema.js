@@ -19,17 +19,19 @@ window.populateSetsCB = function (form) {
     const data = (typeof form.getValue === 'function') ? form.getValue() : (form.data || {});
     const geoms = data.buildGeometries || [];
     
-    // Calculate total counts from all geometries
+    // Calculate total counts from all geometries by summing their count properties
     const totalCounts = geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
     
     // Get number of sets from user input
     const numSets = Math.max(1, Number(data.setNumber) || 1);
     
-    // Build m × n matrix: array of objects with { row: [bool, bool, ...] }
+    // Build m × n matrix: array of arrays where each inner array represents a row of checkboxes
+    // m = numSets (rows), n = totalCounts (columns)
     const setsMatrix = [];
     for (let i = 0; i < numSets; i++) {
+        // Each row is an array of booleans (checkboxes), initialized to false
         const row = new Array(totalCounts).fill(false);
-        setsMatrix.push({ row });
+        setsMatrix.push(row);
     }
     
     // Write values back to form

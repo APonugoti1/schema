@@ -525,23 +525,25 @@
     "setsMatrix": {
       "title": "Sets × Parts Matrix",
       "description": "m rows (sets) × n columns (total parts). Check or uncheck each cell.",
+      "type": "string",
+      "format": "html",
+      "propertyOrder": 4.4,
+      "options": {
+        "grid_columns": 12,
+        "hidden": false
+      }
+    },
+    "setsMatrixData": {
       "type": "array",
-      "format": "table",
       "items": {
         "type": "object",
-        "headerTemplate": "Set {{i1}}",
-        "properties": {},
         "additionalProperties": {
           "type": "boolean"
         }
       },
-      "propertyOrder": 4.4,
       "default": [],
       "options": {
-        "grid_columns": 12,
-        "table": {
-          "columns": []
-        }
+        "hidden": true
       }
     },
     "extraInfo": {

@@ -12,3 +12,35 @@ Handlebars.registerHelper('joinarray', function (a, sep, prefix=false) {
     }
     return result;
 });
+
+// Callback to populate sets matrix from geometry counts
+window.populateSetsCB = function (form) {
+    // Get current form data
+    const data = (typeof form.getValue === 'function') ? form.getValue() : (form.data || {});
+    const geoms = data.buildGeometries || [];
+    
+    // Calculate total counts from all geometries
+    const totalCounts = geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
+    
+    // Get number of sets from user input
+    const numSets = Math.max(1, Number(data.setNumber) || 1);
+    
+    // Build m × n matrix: array of objects with { row: [bool, bool, ...] }
+    const setsMatrix = [];
+    for (let i = 0; i < numSets; i++) {
+        const row = new Array(totalCounts).fill(false);
+        setsMatrix.push({ row });
+    }
+    
+    // Write values back to form
+    if (typeof form.setValue === 'function') {
+        form.setValue('totalCounts', totalCounts);
+        form.setValue('setsMatrix', setsMatrix);
+    } else if (form.data) {
+        form.data.totalCounts = totalCounts;
+        form.data.setsMatrix = setsMatrix;
+        if (typeof form.render === 'function') {
+            form.render();
+        }
+    }
+};

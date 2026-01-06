@@ -484,6 +484,63 @@
       },
       "format": "grid"
     },
+    "setNumber": {
+      "title": "Number of Sets (m)",
+      "description": "Enter the number of sets to create the matrix",
+      "type": "integer",
+      "minimum": 1,
+      "default": 1,
+      "propertyOrder": 4.1,
+      "options": {
+        "grid_columns": 3
+      }
+    },
+    "populateSets": {
+      "title": "Generate Sets Matrix",
+      "description": "Create m×n checkbox matrix from geometry counts",
+      "type": "string",
+      "format": "button",
+      "propertyOrder": 4.2,
+      "options": {
+        "button": {
+          "action": "populateSetsCB"
+        }
+      }
+    },
+    "totalCounts": {
+      "title": "Total Count (n)",
+      "description": "Sum of all geometry counts (auto-calculated)",
+      "type": "integer",
+      "readOnly": true,
+      "default": 0,
+      "propertyOrder": 4.3,
+      "options": {
+        "grid_columns": 3
+      }
+    },
+    "setsMatrix": {
+      "title": "Sets × Parts Matrix",
+      "description": "m rows (sets) × n columns (parts). Each cell is a checkbox.",
+      "type": "array",
+      "format": "grid",
+      "items": {
+        "headerTemplate": "Set {{i1}}",
+        "type": "object",
+        "properties": {
+          "row": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            },
+            "options": {
+              "grid_columns": 12
+            }
+          }
+        }
+      },
+      "propertyOrder": 4.4,
+      "default": []
+    },
     "extraInfo": {
       "title": "Extraneous Information",
       "description": "Optional identifiers for split/batch numbers, etc.",

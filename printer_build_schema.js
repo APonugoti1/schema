@@ -19,8 +19,11 @@ Handlebars.registerHelper('sumGeometryCounts', function (geoms) {
     return geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
 });
 
-// Callback to populate sets matrix from geometry counts
-window.populateSetsCB = function (form) {
+// Global variable to store the matrix data
+let globalSetsMatrix = [];
+
+// Function to handle the populate sets logic
+function populateMatrix(form) {
     // Get current form data
     const data = (typeof form.getValue === 'function') ? form.getValue() : (form.data || {});
     const geoms = data.buildGeometries || [];
@@ -30,6 +33,11 @@ window.populateSetsCB = function (form) {
     
     // Get number of sets from user input
     const numSets = Math.max(1, Number(data.setNumber) || 1);
+    
+    if (totalCounts === 0) {
+        console.error('Total counts is 0. Please add geometries with counts.');
+        return;
+    }
     
     // Build m × n matrix: array of objects where each object represents a row
     // m = numSets (rows), n = totalCounts (columns)
@@ -43,32 +51,33 @@ window.populateSetsCB = function (form) {
         setsMatrix.push(row);
     }
     
+    globalSetsMatrix = setsMatrix;
+    
     // Generate HTML table with checkboxes
-    let html = '<table style="border-collapse: collapse; width: 100%; margin-top: 10px;">';
+    let html = '<div style="overflow-x: auto; margin-top: 10px;"><table style="border-collapse: collapse; border: 2px solid #333;">';
     
     // Create header row with Part 1, Part 2, ... Part n
-    html += '<tr style="background-color: #f0f0f0;">';
-    html += '<th style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Set</th>';
+    html += '<tr style="background-color: #e8e8e8;">';
+    html += '<th style="border: 1px solid #999; padding: 10px; font-weight: bold; min-width: 60px;">Set</th>';
     for (let j = 1; j <= totalCounts; j++) {
-        html += `<th style="border: 1px solid #ccc; padding: 8px; text-align: center; font-weight: bold;">P${j}</th>`;
+        html += `<th style="border: 1px solid #999; padding: 8px; text-align: center; font-weight: bold; min-width: 40px;">P${j}</th>`;
     }
     html += '</tr>';
     
     // Create rows for each set with checkboxes
     for (let i = 0; i < numSets; i++) {
         html += '<tr>';
-        html += `<td style="border: 1px solid #ccc; padding: 8px; font-weight: bold; background-color: #f9f9f9;">Set ${i + 1}</td>`;
+        html += `<td style="border: 1px solid #999; padding: 10px; font-weight: bold; background-color: #f5f5f5; min-width: 60px;">Set ${i + 1}</td>`;
         for (let j = 1; j <= totalCounts; j++) {
-            const partKey = `Part ${j}`;
-            const checkboxId = `checkbox_set${i + 1}_part${j}`;
-            html += `<td style="border: 1px solid #ccc; padding: 8px; text-align: center;">
+            const checkboxId = `checkbox_set${i}_part${j}`;
+            html += `<td style="border: 1px solid #999; padding: 8px; text-align: center; background-color: white;">
                 <input type="checkbox" id="${checkboxId}" name="setsMatrix_${i}_${j}" data-set="${i}" data-part="${j}" style="width: 18px; height: 18px; cursor: pointer;">
             </td>`;
         }
         html += '</tr>';
     }
     
-    html += '</table>';
+    html += '</table></div>';
     
     // Write values back to form
     if (typeof form.setValue === 'function') {
@@ -87,21 +96,45 @@ window.populateSetsCB = function (form) {
     // Attach event listeners to checkboxes after rendering
     setTimeout(() => {
         const checkboxes = document.querySelectorAll('input[name^="setsMatrix_"]');
-        checkboxes.forEach((checkbox, index) => {
+        checkboxes.forEach((checkbox) => {
             checkbox.addEventListener('change', function() {
                 const setIdx = parseInt(this.dataset.set);
-                const partIdx = parseInt(this.dataset.part) - 1;
-                if (setsMatrix[setIdx]) {
-                    const partKey = `Part ${this.dataset.part}`;
-                    setsMatrix[setIdx][partKey] = this.checked;
+                const partIdx = parseInt(this.dataset.part);
+                if (globalSetsMatrix[setIdx]) {
+                    const partKey = `Part ${partIdx}`;
+                    globalSetsMatrix[setIdx][partKey] = this.checked;
                     // Update the hidden data field
                     if (typeof form.setValue === 'function') {
-                        form.setValue('setsMatrixData', setsMatrix);
+                        form.setValue('setsMatrixData', globalSetsMatrix);
                     } else if (form.data) {
-                        form.data.setsMatrixData = setsMatrix;
+                        form.data.setsMatrixData = globalSetsMatrix;
                     }
                 }
             });
         });
     }, 100);
+}
+
+// Watch for populateSets checkbox change and trigger matrix generation
+window.addEventListener('load', function() {
+    const observer = new MutationObserver(function(mutations) {
+        // Check if populateSets checkbox exists and is checked
+        const populateSetsCheckbox = document.querySelector('input[name="populateSets"]');
+        if (populateSetsCheckbox && populateSetsCheckbox.checked) {
+            // Get form instance from the document
+            if (window.currentForm) {
+                populateMatrix(window.currentForm);
+            }
+            // Uncheck it after processing
+            populateSetsCheckbox.checked = false;
+        }
+    });
+    
+    observer.observe(document.body, { subtree: true, attributes: true });
+});
+
+// Callback for when populateSets value changes
+window.populateSetsCB = function (form) {
+    window.currentForm = form;
+    populateMatrix(form);
 };

@@ -497,14 +497,12 @@
     },
     "populateSets": {
       "title": "Generate Sets Matrix",
-      "description": "Create m×n checkbox matrix from geometry counts",
-      "type": "string",
-      "format": "button",
+      "description": "Click to create m×n checkbox matrix",
+      "type": "boolean",
+      "default": false,
       "propertyOrder": 4.2,
       "options": {
-        "button": {
-          "action": "populateSetsCB"
-        }
+        "grid_columns": 3
       }
     },
     "totalCounts": {

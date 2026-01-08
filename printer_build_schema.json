@@ -525,33 +525,20 @@
       }
     },
     "setsMatrixUI": {
-    "title": "Sets × Geometries Matrix",
-    "type": "array",
-    "format": "table",
-    "items": {
-      "type": "object",
-      "additionalProperties": {
-      "type": "boolean",
-      "format": "checkbox"
-    }
-  },
-  "propertyOrder": 4.4,
-  "options": {
-    "grid_columns": 12
-  }
-},
-    "setsMatrixData": {
+      "title": "Sets × Geometries Matrix",
       "type": "array",
+      "format": "table",
       "items": {
         "type": "object",
         "additionalProperties": {
-          "type": "boolean"
+          "type": "boolean",
+          "format": "checkbox"
         }
       },
       "default": [],
-      "options": {
-        "hidden": true
-      }
+      "template": "{{generateMatrix setNumber totalCounts}}",
+      "propertyOrder": 4.3,
+      "options": { "grid_columns": 12 }
     },
     "extraInfo": {
       "title": "Extraneous Information",

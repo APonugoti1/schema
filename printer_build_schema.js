@@ -24,49 +24,37 @@ Handlebars.registerHelper('sumGeometryCounts', function (geoms) {
 JSONEditor.defaults.callbacks = JSONEditor.defaults.callbacks || {};
 JSONEditor.defaults.callbacks.button = JSONEditor.defaults.callbacks.button || {};
 
-JSONEditor.defaults.callbacks.button.generateMatrix = function (editor) {
-  const value = editor.getValue();
+Handlebars.registerHelper('generateMatrix', function(setNumber, totalCounts) {
+    const rows = setNumber || 4;
+    const cols = totalCounts || 40;
+    const matrix = [];
 
-  const m = value.setNumber || 1;
-  const geoms = value.buildGeometries || [];
-  const n = geoms.reduce((sum, g) => sum + (g.count || 0), 0);
-
-  if (n < 1) {
-    alert('Total geometry count must be at least 1');
-    return;
-  }
-
-  const matrix = [];
-  for (let i = 0; i < m; i++) {
-    const row = {};
-    for (let j = 1; j <= n; j++) {
-      row[`G${j}`] = false;
+    for (let i = 0; i < rows; i++) {
+        const row = {};
+        for (let j = 1; j <= cols; j++) {
+            row[`G${j}`] = false; // default unchecked
+        }
+        matrix.push(row);
     }
-    matrix.push(row);
-  }
 
-  const uiEditor = editor.getEditor('root.setsMatrixUI');
-  const dataEditor = editor.getEditor('root.setsMatrixData');
-
-  if (uiEditor) uiEditor.setValue(matrix);
-  if (dataEditor) dataEditor.setValue(matrix);
-};
+    // Return as JSON string so JSONEditor can parse it
+    return JSON.stringify(matrix);
+});
 
 
-editor.on('change', () => {
-  const total = editor.getValue().totalCounts;
-  const matrixEditor = editor.getEditor('root.setsMatrixUI');
-
-  if (!matrixEditor) return;
-
-  const current = matrixEditor.getValue() || [];
-  const trimmed = current.map(row => {
-    const newRow = {};
-    for (let i = 1; i <= total; i++) {
-      newRow[`G${i}`] = row[`G${i}`] || false;
+Handlebars.registerHelper('trimMatrix', function(matrix, totalCounts) {
+    const total = totalCounts || 40; // fallback to 40 if not provided
+    if (!matrix || !Array.isArray(matrix)) {
+        return JSON.stringify([]);
     }
-    return newRow;
-  });
 
-  matrixEditor.setValue(trimmed);
+    const trimmed = matrix.map(row => {
+        const newRow = {};
+        for (let i = 1; i <= total; i++) {
+            newRow[`G${i}`] = row[`G${i}`] || false;
+        }
+        return newRow;
+    });
+
+    return JSON.stringify(trimmed);
 });

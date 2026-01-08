@@ -490,7 +490,7 @@
       "type": "integer",
       "minimum": 1,
       "default": 1,
-      "propertyOrder": 4.1,
+      "propertyOrder": 5,
       "options": {
         "grid_columns": 3
       }
@@ -500,12 +500,12 @@
       "description": "Click to create m×n checkbox matrix",
       "type": "object",
       "format": "button",
-      "propertyOrder": 4.2,
+      "propertyOrder": 6,
       "options": {
         "grid_columns": 3,
         "button": {
           "title": "Generate Sets Matrix",
-          "action": "generateMatrix"
+          "action": "generateMatrixCB"
         }
       }
     },
@@ -515,7 +515,7 @@
       "type": "integer",
       "readOnly": true,
       "default": 0,
-      "propertyOrder": 4.3,
+      "propertyOrder": 7,
       "watch": {
         "geoms": "root.buildGeometries"
       },
@@ -524,21 +524,34 @@
         "grid_columns": 3
       }
     },
-"setsMatrixUI": {
-  "title": "Sets × Geometries Matrix",
-  "type": "array",
-  "format": "table",
-  "items": {
-    "type": "object",
-    "additionalProperties": {
-      "type": "boolean",
-      "format": "checkbox"
-    }
-  },
-  "default": [],
-  "propertyOrder": 4.3,
-  "options": { "grid_columns": 12 }
-},
+    "setsMatrixUI": {
+      "title": "Sets × Geometries Matrix",
+      "description": "Select which geometries belong to each set",
+      "type": "array",
+      "format": "table",
+      "items": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "boolean",
+          "format": "checkbox"
+        }
+      },
+      "default": [],
+      "propertyOrder": 8,
+      "options": {
+        "grid_columns": 12
+      }
+    },
+    "setsMatrixData": {
+      "title": "Matrix Data",
+      "type": "array",
+      "default": [],
+      "propertyOrder": 9,
+      "options": {
+        "hidden": true,
+        "grid_columns": 12
+      }
+    },
     "extraInfo": {
       "title": "Extraneous Information",
       "description": "Optional identifiers for split/batch numbers, etc.",

@@ -524,22 +524,21 @@
         "grid_columns": 3
       }
     },
-    "setsMatrixUI": {
-      "title": "Sets × Geometries Matrix",
-      "type": "array",
-      "format": "table",
-      "items": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "boolean",
-          "format": "checkbox"
-        }
-      },
-      "default": [],
-      "template": "{{generateMatrix setNumber totalCounts}}",
-      "propertyOrder": 4.3,
-      "options": { "grid_columns": 12 }
-    },
+"setsMatrixUI": {
+  "title": "Sets × Geometries Matrix",
+  "type": "array",
+  "format": "table",
+  "items": {
+    "type": "object",
+    "additionalProperties": {
+      "type": "boolean",
+      "format": "checkbox"
+    }
+  },
+  "default": [],
+  "propertyOrder": 4.3,
+  "options": { "grid_columns": 12 }
+},
     "extraInfo": {
       "title": "Extraneous Information",
       "description": "Optional identifiers for split/batch numbers, etc.",

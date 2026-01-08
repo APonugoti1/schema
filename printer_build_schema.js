@@ -1,3 +1,4 @@
+// --- Your existing Handlebars helpers for string and array manipulations ---
 Handlebars.registerHelper('replaceAll', function (string, search, replacement) {
     return (string !== undefined && string !== null) ? string.replaceAll(search, replacement) : '';
 });
@@ -20,41 +21,42 @@ Handlebars.registerHelper('sumGeometryCounts', function (geoms) {
     return geoms.reduce((sum, geom) => sum + (Number(geom.count) || 0), 0);
 });
 
+// --- Generate matrix as actual boolean objects, not JSON strings ---
+function generateMatrix(editor) {
+    const value = editor.getValue();
+    const rows = value.setNumber || 4; // number of sets
+    const cols = value.totalCounts || 40; // sum of geometry counts
 
-JSONEditor.defaults.callbacks = JSONEditor.defaults.callbacks || {};
-JSONEditor.defaults.callbacks.button = JSONEditor.defaults.callbacks.button || {};
+    if (cols < 1) return;
 
-Handlebars.registerHelper('generateMatrix', function(setNumber, totalCounts) {
-    const rows = setNumber || 4;
-    const cols = totalCounts || 40;
+    const current = editor.getEditor('root.setsMatrixUI')?.getValue() || [];
     const matrix = [];
 
     for (let i = 0; i < rows; i++) {
         const row = {};
         for (let j = 1; j <= cols; j++) {
-            row[`G${j}`] = false; // default unchecked
+            row[`G${j}`] = (current[i] && current[i][`G${j}`]) || false; // boolean
         }
         matrix.push(row);
     }
 
-    // Return as JSON string so JSONEditor can parse it
-    return JSON.stringify(matrix);
+    const uiEditor = editor.getEditor('root.setsMatrixUI');
+    const dataEditor = editor.getEditor('root.setsMatrixData');
+
+    if (uiEditor) uiEditor.setValue(matrix);
+    if (dataEditor) dataEditor.setValue(matrix);
+}
+
+// --- Auto-update matrix whenever editor changes ---
+editor.on('change', () => {
+    // Update totalCounts from geometry counts
+    const value = editor.getValue();
+    value.totalCounts = (value.buildGeometries || []).reduce((sum, g) => sum + (g.count || 0), 0);
+    editor.setValue(value, false); // update silently
+
+    // Generate or resize the checkbox matrix
+    generateMatrix(editor);
 });
 
-
-Handlebars.registerHelper('trimMatrix', function(matrix, totalCounts) {
-    const total = totalCounts || 40; // fallback to 40 if not provided
-    if (!matrix || !Array.isArray(matrix)) {
-        return JSON.stringify([]);
-    }
-
-    const trimmed = matrix.map(row => {
-        const newRow = {};
-        for (let i = 1; i <= total; i++) {
-            newRow[`G${i}`] = row[`G${i}`] || false;
-        }
-        return newRow;
-    });
-
-    return JSON.stringify(trimmed);
-});
+// --- Initialize matrix on load ---
+generateMatrix(editor);

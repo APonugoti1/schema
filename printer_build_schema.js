@@ -28,7 +28,8 @@ JSONEditor.defaults.callbacks.button.generateMatrix = function (editor) {
   const value = editor.getValue();
 
   const m = value.setNumber || 1;
-  const n = value.totalCounts || 0;
+  const geoms = value.buildGeometries || [];
+  const n = geoms.reduce((sum, g) => sum + (g.count || 0), 0);
 
   if (n < 1) {
     alert('Total geometry count must be at least 1');
@@ -36,7 +37,6 @@ JSONEditor.defaults.callbacks.button.generateMatrix = function (editor) {
   }
 
   const matrix = [];
-
   for (let i = 0; i < m; i++) {
     const row = {};
     for (let j = 1; j <= n; j++) {
@@ -45,11 +45,11 @@ JSONEditor.defaults.callbacks.button.generateMatrix = function (editor) {
     matrix.push(row);
   }
 
-  // Populate visible UI
-  editor.getEditor('root.setsMatrixUI').setValue(matrix);
+  const uiEditor = editor.getEditor('root.setsMatrixUI');
+  const dataEditor = editor.getEditor('root.setsMatrixData');
 
-  // Persist hidden copy (optional but recommended)
-  editor.getEditor('root.setsMatrixData').setValue(matrix);
+  if (uiEditor) uiEditor.setValue(matrix);
+  if (dataEditor) dataEditor.setValue(matrix);
 };
 
 

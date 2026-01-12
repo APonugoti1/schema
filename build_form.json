@@ -3,11 +3,11 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-    "lookup": {
+"lookup": {
       "type": "string",
-      "title": "Sample IGSNs",
+      "title": "IGSN",
       "description": "Lookup for the IGSN of the sample",
-      "propertyOrder": 1,
+      "format": "autocomplete",
       "options": {
         "autocomplete": {
           "search": "search_deposition",
@@ -18,7 +18,8 @@
           "multiple": true,
           "separator": ","
         }
-      }
+      },
+      "propertyOrder": 0
     },
     "buildParameters": {
       "title": "Build Process Parameters",

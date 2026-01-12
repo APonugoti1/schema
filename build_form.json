@@ -1,0 +1,66 @@
+{
+  "title": "Build Metadata Schema",
+  "description": "Schema for recording metadata of builds (build parameters)",
+  "type": "object",
+  "properties": {
+"lookup": {
+  "type": "string",
+  "title": "Sample IGSNs",
+  "description": "Lookup for the IGSN of the sample",
+  "options": {
+    "autocomplete": {
+      "search": "search_deposition",
+      "renderResult": "render_deposition",
+      "getResultValue": "get_deposition_value",
+      "autoSelect": true,
+      "debounceTime": 500,
+      "multiple": true,
+      "separator": ","
+    }
+  }
+},
+    "buildParameters": {
+      "title": "Build Process Parameters",
+      "description": "Laser process parameters for all regions of the build",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["upskin", "downskin", "infill", "contouring"],
+            "description": "Type of build region"
+          },
+          "laserSpeed": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Laser velocity in mm/s"
+          },
+          "laserPower": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 370,
+            "description": "Laser power in Watts"
+          },
+          "layerThickness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Layer thickness in microns"
+          },
+          "hatchSpacing": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 300,
+            "description": "Hatch spacing in microns"
+          }
+        },
+        "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]
+      },
+      "uniqueItemProperties": ["type"]
+    }
+  },
+  "required": ["lookup", "buildParameters"]
+}

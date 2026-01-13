@@ -107,7 +107,19 @@
         },
         "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]
       }
+    },
+    "allOf": [
+  {
+    "not": {
+      "anyOf": [
+        { "contains": { "properties": { "type": { "const": "upskin" } }, "required": ["type"], "maxContains": 1 } },
+        { "contains": { "properties": { "type": { "const": "downskin" } }, "required": ["type"], "maxContains": 1 } },
+        { "contains": { "properties": { "type": { "const": "infill" } }, "required": ["type"], "maxContains": 1 } },
+        { "contains": { "properties": { "type": { "const": "contouring" } }, "required": ["type"], "maxContains": 1 } }
+      ]
     }
+  }
+]
   },
   "required": ["lookup", "buildParameters"]
 }

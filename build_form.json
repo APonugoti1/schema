@@ -17,6 +17,7 @@
             "renderResult": "render_deposition",
             "getResultValue": "get_deposition_value",
             "autoSelect": true,
+            "type": "vertical",
             "debounceTime": 500
           },
           "grid_columns": 10

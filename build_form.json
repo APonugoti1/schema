@@ -60,11 +60,7 @@
       "maxItems": 4,
       "uniqueItemProperties": ["type"],
       "items": {
-        "type": "object",
-        "format": "grid",
-        "options": {
-        "grid_columns": 12
-        },
+        "type": "object", "format": "grid", "options": { "grid_columns": 12 },
         "properties": {
           "type": {
             "type": "string",
@@ -78,7 +74,7 @@
             "maximum": 10000,
             "description": " PRC-3-2-9",
             "propertyOrder": 2,
-            "options": { "grid_columns": 12 }
+            "options": { "grid_row": 12 }
           },
           "laserPower": {
             "type": "number",
@@ -86,7 +82,7 @@
             "maximum": 370,
             "description": "PRC-3-2-3",
             "propertyOrder": 3,
-            "options": { "grid_columns": 12 }
+            "options": { "grid_row": 12 }
           },
           "layerThickness": {
             "type": "number",
@@ -94,7 +90,7 @@
             "maximum": 100,
             "description": "PRC-3-2-1",
             "propertyOrder": 4,
-            "options": { "grid_columns": 12 }
+            "options": { "grid_row": 12 }
           },
           "hatchSpacing": {
             "type": "number",
@@ -102,24 +98,24 @@
             "maximum": 300,
             "description": "PRC-3-2-6",
             "propertyOrder": 5,
-            "options": { "grid_columns": 12 }
+            "options": { "grid_row": 12 }
           }
         },
         "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]
-      }
-    },
-    "allOf": [
-  {
-    "not": {
-      "anyOf": [
-        { "contains": { "properties": { "type": { "const": "upskin" } }, "required": ["type"], "maxContains": 1 } },
-        { "contains": { "properties": { "type": { "const": "downskin" } }, "required": ["type"], "maxContains": 1 } },
-        { "contains": { "properties": { "type": { "const": "infill" } }, "required": ["type"], "maxContains": 1 } },
-        { "contains": { "properties": { "type": { "const": "contouring" } }, "required": ["type"], "maxContains": 1 } }
+      },
+      "allOf": [
+        {
+          "not": {
+            "anyOf": [
+              { "contains": { "properties": { "type": { "const": "upskin" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "downskin" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "infill" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "contouring" } }, "required": ["type"] }, "minContains": 2 }
+            ]
+          }
+        }
       ]
     }
-  }
-]
   },
   "required": ["lookup", "buildParameters"]
 }

@@ -3,35 +3,31 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-       "lookup": {
-      "type": "array",
-      "title": "IGSNs",
-      "description": "Select one or more IGSNs",
-      "minItems": 1,
-      "items": {
-        "type": "string",
-        "format": "autocomplete",
-        "options": {
-          "autocomplete": {
-            "search": "search_deposition",
-            "renderResult": "render_deposition",
-            "getResultValue": "get_deposition_value",
-            "autoSelect": true,
-            "type": "vertical",
-            "debounceTime": 500
-          },
-          "grid_columns": 10
-        }
-      },
+    "lookup": {
+    "type": "array",
+    "title": "IGSNs",
+    "description": "Select one or more IGSNs",
+    "minItems": 1,
+    "items": {
+      "type": "string",
+      "format": "autocomplete",
       "options": {
-        "array_grid": true,
-        "grid_columns": 12,
-        "compact": true,
-        "item_buttons_position": "right",
-        "item_grid_template": "10fr 2fr"
-      },
-      "propertyOrder": 0
+        "autocomplete": {
+          "search": "search_deposition",
+          "renderResult": "render_deposition",
+          "getResultValue": "get_deposition_value",
+          "autoSelect": true,
+          "debounceTime": 500
+        },
+        "grid_columns": 4   
+      }
     },
+    "options": {
+      "array_grid": true,    
+      "grid_row": 2
+    },
+    "propertyOrder": 0
+  },
     "depositionId": {
       "type": "string",
       "title": "IGSN ID",

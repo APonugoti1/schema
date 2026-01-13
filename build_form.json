@@ -3,7 +3,7 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-"lookup": {
+    "lookup": {
       "type": "string",
       "title": "IGSN",
       "description": "Lookup for the IGSN of the sample",
@@ -58,6 +58,7 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 4,
+      "uniqueItemProperties": ["type"],
       "items": {
         "type": "object",
         "properties": {
@@ -98,7 +99,18 @@
         },
         "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]
       },
-      "uniqueItemProperties": ["type"]
+      "allOf": [
+        {
+          "not": {
+            "anyOf": [
+              { "contains": { "properties": { "type": { "const": "upskin" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "downskin" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "infill" } }, "required": ["type"] }, "minContains": 2 },
+              { "contains": { "properties": { "type": { "const": "contouring" } }, "required": ["type"] }, "minContains": 2 }
+            ]
+          }
+        }
+      ]
     }
   },
   "required": ["lookup", "buildParameters"]

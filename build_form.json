@@ -48,7 +48,7 @@
       "description": "BLD-1: Unique identifier for the build",
       "readOnly": true,
       "format": "text",
-      "propertyOrder": 1,
+      "propertyOrder": 999,
       "watch": {
         "igsn": "lookup"
       },

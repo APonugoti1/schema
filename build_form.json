@@ -19,7 +19,7 @@
           "autoSelect": true,
           "debounceTime": 500
         },
-        "grid_row": 3  
+        "grid_columns": 2
       }
     },
     "options": {

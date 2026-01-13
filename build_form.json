@@ -67,28 +67,28 @@
             "propertyOrder": 1
           },
           "laserSpeed": {
-            "type": "float",
+            "type": "number",
             "minimum": 0,
             "maximum": 10000,
             "description": " PRC-3-2-9",
             "propertyOrder": 2
           },
           "laserPower": {
-            "type": "float",
+            "type": "number",
             "minimum": 0,
             "maximum": 370,
             "description": "PRC-3-2-3",
             "propertyOrder": 3
           },
           "layerThickness": {
-            "type": "float",
+            "type": "number",
             "minimum": 0,
             "maximum": 100,
             "description": "PRC-3-2-1",
             "propertyOrder": 4
           },
           "hatchSpacing": {
-            "type": "float",
+            "type": "number",
             "minimum": 0,
             "maximum": 300,
             "description": "PRC-3-2-6",

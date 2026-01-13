@@ -21,6 +21,36 @@
       },
       "propertyOrder": 0
     },
+    "depositionId": {
+      "type": "string",
+      "title": "IGSN ID",
+      "description": "Unique identifier for the deposition",
+      "readOnly": true,
+      "propertyOrder": 999,
+      "watch": {
+        "igsn": "lookup"
+      },
+      "template": "{{split igsn ' - ' 1}}",
+      "options": {
+        "grid_columns": 12,
+        "hidden": true
+      }
+    },
+    "buildId": {
+      "type": "string",
+      "title": "Build ID",
+      "description": "BLD-1: Unique identifier for the build",
+      "readOnly": true,
+      "format": "text",
+      "propertyOrder": 1,
+      "watch": {
+        "igsn": "lookup"
+      },
+      "template": "{{split igsn ' - ' 2}}",
+      "options": {
+        "grid_columns": 12
+      }
+    },
     "buildParameters": {
       "title": "Build Process Parameters",
       "description": "Laser process parameters for all regions of the build",
@@ -33,31 +63,36 @@
           "type": {
             "type": "string",
             "enum": ["upskin", "downskin", "infill", "contouring"],
-            "description": "Type of build region"
+            "description": "Type of build region",
+            "propertyOrder": 1
           },
           "laserSpeed": {
-            "type": "number",
+            "type": "float",
             "minimum": 0,
             "maximum": 10000,
-            "description": "Laser velocity in mm/s"
+            "description": " PRC-3-2-9",
+            "propertyOrder": 2
           },
           "laserPower": {
-            "type": "number",
+            "type": "float",
             "minimum": 0,
             "maximum": 370,
-            "description": "Laser power in Watts"
+            "description": "PRC-3-2-3",
+            "propertyOrder": 3
           },
           "layerThickness": {
-            "type": "number",
+            "type": "float",
             "minimum": 0,
             "maximum": 100,
-            "description": "Layer thickness in microns"
+            "description": "PRC-3-2-1",
+            "propertyOrder": 4
           },
           "hatchSpacing": {
-            "type": "number",
+            "type": "float",
             "minimum": 0,
             "maximum": 300,
-            "description": "Hatch spacing in microns"
+            "description": "PRC-3-2-6",
+            "propertyOrder": 5
           }
         },
         "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]

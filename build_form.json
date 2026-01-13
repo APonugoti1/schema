@@ -24,7 +24,8 @@
     },
     "options": {
       "array_grid": true,    
-      "grid_row": 2
+      "grid_row": 2,
+      "grid_column": 4
     },
     "propertyOrder": 0
   },

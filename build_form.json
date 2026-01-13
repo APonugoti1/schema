@@ -4,9 +4,12 @@
   "type": "object",
   "properties": {
     "lookup": {
+    "type": "array",
+    "title": "IGSNs",
+    "description": "Select one or more IGSNs",
+    "minItems": 1,
+    "items": {
       "type": "string",
-      "title": "IGSN",
-      "description": "Lookup for the IGSN of the sample",
       "format": "autocomplete",
       "options": {
         "autocomplete": {
@@ -14,13 +17,15 @@
           "renderResult": "render_deposition",
           "getResultValue": "get_deposition_value",
           "autoSelect": true,
-          "debounceTime": 500,
-          "multiple": true,
-          "separator": ","
+          "debounceTime": 500
         }
-      },
-      "propertyOrder": 0
+      }
     },
+    "options": {
+      "grid_columns": 12
+    },
+    "propertyOrder": 0
+  },
     "depositionId": {
       "type": "string",
       "title": "IGSN ID",

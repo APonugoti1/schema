@@ -61,6 +61,10 @@
       "uniqueItemProperties": ["type"],
       "items": {
         "type": "object",
+        "format": "grid",
+        "options": {
+        "grid_columns": 12
+        },
         "properties": {
           "type": {
             "type": "string",
@@ -73,28 +77,32 @@
             "minimum": 0,
             "maximum": 10000,
             "description": " PRC-3-2-9",
-            "propertyOrder": 2
+            "propertyOrder": 2,
+            "options": { "grid_columns": 12 }
           },
           "laserPower": {
             "type": "number",
             "minimum": 0,
             "maximum": 370,
             "description": "PRC-3-2-3",
-            "propertyOrder": 3
+            "propertyOrder": 3,
+            "options": { "grid_columns": 12 }
           },
           "layerThickness": {
             "type": "number",
             "minimum": 0,
             "maximum": 100,
             "description": "PRC-3-2-1",
-            "propertyOrder": 4
+            "propertyOrder": 4,
+            "options": { "grid_columns": 12 }
           },
           "hatchSpacing": {
             "type": "number",
             "minimum": 0,
             "maximum": 300,
             "description": "PRC-3-2-6",
-            "propertyOrder": 5
+            "propertyOrder": 5,
+            "options": { "grid_columns": 12 }
           }
         },
         "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]

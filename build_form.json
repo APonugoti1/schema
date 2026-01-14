@@ -3,10 +3,13 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-      "lookup": {
+    "lookup": {
+    "type": "array",
+    "title": "IGSNs",
+    "description": "Select one or more IGSNs",
+    "minItems": 1,
+    "items": {
       "type": "string",
-      "title": "IGSN",
-      "description": "Lookup for the IGSN of the sample",
       "format": "autocomplete",
       "options": {
         "autocomplete": {
@@ -15,9 +18,44 @@
           "getResultValue": "get_deposition_value",
           "autoSelect": true,
           "debounceTime": 500
-        }
+        },
+        "grid_columns": 2
+      }
+    },
+    "options": {
+      "array_grid": true
+    },
+    "propertyOrder": 0
+  },
+      "depositionId": {
+      "type": "string",
+      "title": "IGSN ID",
+      "description": "Unique identifier for the deposition",
+      "readOnly": true,
+      "propertyOrder": 999,
+      "watch": {
+        "igsn": "lookup"
       },
-      "propertyOrder": 0
+      "template": "{{split igsn ' - ' 1}}",
+      "options": {
+        "grid_columns": 12,
+        "hidden": true
+      }
+    },
+    "buildId": {
+      "type": "string",
+      "title": "Build ID",
+      "description": "BLD-1: Unique identifier for the build",
+      "readOnly": true,
+      "format": "text",
+      "propertyOrder": 1,
+      "watch": {
+        "igsn": "lookup"
+      },
+      "template": "{{split igsn ' - ' 2}}",
+      "options": {
+        "grid_columns": 12
+      }
     },
     "printerBuildID": {
       "title": "Printer Build ID",

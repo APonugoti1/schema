@@ -57,17 +57,20 @@
         "grid_columns": 12
       }
     },
-    "printerBuildID": {
-      "title": "Printer Build ID",
-      "description": "Automatically generated identifier for the printer build",
-      "type": "string",
-      "template": "{{formatBuildParams root.buildParameters}}",
-      "readOnly": true,
-      "propertyOrder": 2,
-      "options": {
-        "grid_columns": 12
-      }
+  "printerBuildID": {
+    "title": "Printer Build ID",
+    "description": "Automatically generated identifier for the printer build",
+    "type": "string",
+    "template": "{{formatBuildParams params}}",
+    "readOnly": true,
+    "propertyOrder": 2,
+    "watch": {
+      "params": "root.buildParameters"
     },
+    "options": {
+      "grid_columns": 12
+    }
+  },
     "buildParameters": {
       "title": "Build Process Parameters",
       "description": "Laser process parameters for all regions of the build",

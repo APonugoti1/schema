@@ -38,30 +38,34 @@
         "hidden": true
       }
     },
-  "printerBuildID": {
-    "title": "Printer Build ID",
-    "description": "Automatically generated identifier for the printer build",
-    "type": "string",
-    "template": "{{formatBuildParams params}}",
-    "readOnly": true,
-    "propertyOrder": 2,
-    "watch": {
-      "params": "root.buildParameters"
+    "printerBuildID": {
+      "title": "Printer Build ID",
+      "description": "Automatically generated identifier for the printer build",
+      "type": "string",
+      "template": "{{formatBuildParams params}}",
+      "readOnly": true,
+      "propertyOrder": 2,
+      "watch": {
+        "params": "root.buildParameters"
+      },
+      "options": {
+        "grid_columns": 12
+      }
     },
-    "options": {
-      "grid_columns": 12
-    }
-  },
     "buildParameters": {
       "title": "Build Process Parameters",
-      "description": "Laser process parameters for all regions of the build",
+      "description": "Laser process parameters for all regions of the build. Each type (upskin, downskin, infill, contouring) can appear only once.",
       "propertyOrder": 3,
       "type": "array",
       "minItems": 1,
       "maxItems": 4,
       "uniqueItemProperties": ["type"],
       "items": {
-        "type": "object", "format": "grid", "options": { "grid_columns": 12 },
+        "type": "object",
+        "format": "grid",
+        "options": {
+          "grid_columns": 12
+        },
         "properties": {
           "type": {
             "type": "string",
@@ -73,9 +77,11 @@
             "type": "number",
             "minimum": 0,
             "maximum": 10000,
-            "description": " PRC-3-2-9",
+            "description": "PRC-3-2-9",
             "propertyOrder": 2,
-            "options": { "grid_row": 12 }
+            "options": {
+              "grid_row": 12
+            }
           },
           "laserPower": {
             "type": "number",
@@ -83,7 +89,9 @@
             "maximum": 370,
             "description": "PRC-3-2-3",
             "propertyOrder": 3,
-            "options": { "grid_row": 12 }
+            "options": {
+              "grid_row": 12
+            }
           },
           "layerThickness": {
             "type": "number",
@@ -91,7 +99,9 @@
             "maximum": 100,
             "description": "PRC-3-2-1",
             "propertyOrder": 4,
-            "options": { "grid_row": 12 }
+            "options": {
+              "grid_row": 12
+            }
           },
           "hatchSpacing": {
             "type": "number",
@@ -99,12 +109,27 @@
             "maximum": 300,
             "description": "PRC-3-2-6",
             "propertyOrder": 5,
-            "options": { "grid_row": 12 }
+            "options": {
+              "grid_row": 12
+            }
           }
         },
-        "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"]
+        "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"],
+        "additionalProperties": false
       }
     }
   },
-  "required": ["lookup", "buildParameters"]
+  "required": ["lookup", "buildParameters"],
+  "allOf": [
+    {
+      "not": {
+        "properties": {
+          "buildParameters": {
+            "type": "array",
+            "minItems": 5
+          }
+        }
+      }
+    }
+  ]
 }

@@ -3,13 +3,10 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-    "lookup": {
-    "type": "array",
-    "title": "IGSNs",
-    "description": "Select one or more IGSNs",
-    "minItems": 1,
-    "items": {
+        "lookup": {
       "type": "string",
+      "title": "IGSN",
+      "description": "Lookup for the IGSN of the sample",
       "format": "autocomplete",
       "options": {
         "autocomplete": {
@@ -18,15 +15,10 @@
           "getResultValue": "get_deposition_value",
           "autoSelect": true,
           "debounceTime": 500
-        },
-        "grid_columns": 2
-      }
+        }
+      },
+      "propertyOrder": 0
     },
-    "options": {
-      "array_grid": true
-    },
-    "propertyOrder": 0
-  },
     "depositionId": {
       "type": "string",
       "title": "IGSN ID",

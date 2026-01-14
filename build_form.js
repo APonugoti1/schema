@@ -72,3 +72,24 @@ Handlebars.registerHelper('isTypeUsed', function (selectedType, allParams) {
     if (!allParams || !Array.isArray(allParams)) return false;
     return allParams.some(p => p.type === selectedType);
 });
+
+// Custom validator for duplicate build parameter types
+if (!window.JSONEditor.defaults.options.validators) {
+    window.JSONEditor.defaults.options.validators = [];
+}
+
+window.JSONEditor.defaults.options.validators.push(function(schema, data, output) {
+    if (data && data.buildParameters && Array.isArray(data.buildParameters)) {
+        const types = data.buildParameters.map(p => p.type).filter(t => t);
+        const uniqueTypes = new Set(types);
+        
+        if (types.length !== uniqueTypes.size) {
+            output.push({
+                path: 'buildParameters',
+                property: 'buildParameters',
+                message: 'Error: Duplicate build parameter types are not allowed. Each type (upskin, downskin, infill, contouring) can only be used once.',
+                schema: schema
+            });
+        }
+    }
+});

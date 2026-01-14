@@ -91,12 +91,8 @@
             "enum": ["upskin", "downskin", "infill", "contouring"],
             "description": "Type of build region",
             "propertyOrder": 1,
-            "watch": {
-              "allParams": "root.buildParameters"
-            },
             "options": {
-              "enum_titles": ["Up Skin", "Down Skin", "Infill", "Contouring"],
-              "disabled": "{{isTypeUsed this allParams}}"
+              "enum_titles": ["Up Skin", "Down Skin", "Infill", "Contouring"]
             }
           },
           "laserSpeed": {

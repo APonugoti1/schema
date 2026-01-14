@@ -61,7 +61,7 @@
     "title": "Printer Build ID",
     "description": "Automatically generated identifier for the printer build",
     "type": "string",
-    "template": "{{formatBuildParams root.buildParameters}}",
+    "template": "{{formatBuildParams params}}",
     "readOnly": true,
     "propertyOrder": 2,
     "watch": {
@@ -72,28 +72,21 @@
     }
   },
     "buildParameters": {
-    "title": "Build Process Parameters",
-    "description": "Laser process parameters for all regions of the build",
-    "propertyOrder": 3,
-    "type": "array",
-    "minItems": 1,
-    "maxItems": 4,
-    "uniqueItemProperties": ["type"],
-    "items": {
-      "type": "object",
-      "format": "grid",
-      "options": {
-        "grid_columns": 12
-      },
-      "properties": {
+      "title": "Build Process Parameters",
+      "description": "Laser process parameters for all regions of the build",
+      "propertyOrder": 3,
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItemProperties": ["type"],
+      "items": {
+        "type": "object", "format": "grid", "options": { "grid_columns": 12 },
+        "properties": {
           "type": {
             "type": "string",
             "enum": ["upskin", "downskin", "infill", "contouring"],
             "description": "Type of build region",
-            "propertyOrder": 1,
-            "options": {
-              "enum_titles": ["Up Skin", "Down Skin", "Infill", "Contouring"]
-            }
+            "propertyOrder": 1
           },
           "laserSpeed": {
             "type": "number",

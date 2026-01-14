@@ -19,42 +19,16 @@
       },
       "propertyOrder": 0
     },
-    "depositionId": {
-      "type": "string",
-      "title": "IGSN ID",
-      "description": "Unique identifier for the deposition",
-      "readOnly": true,
-      "propertyOrder": 999,
-      "watch": {
-        "igsn": "lookup"
-      },
-      "template": "{{split igsn ' - ' 1}}",
-      "options": {
-        "grid_columns": 12,
-        "hidden": true
-      }
-    },
-    "buildId": {
-      "type": "string",
-      "title": "Build ID",
-      "description": "BLD-1: Unique identifier for the build",
-      "readOnly": true,
-      "format": "text",
-      "propertyOrder": 1,
-      "watch": {
-        "igsn": "lookup"
-      },
-      "template": "{{split igsn ' - ' 2}}",
-      "options": {
-        "grid_columns": 12
-      }
-    },
     "printerBuildID": {
       "title": "Printer Build ID",
       "description": "Automatically generated identifier for the printer build",
       "type": "string",
-      "template": "{{joinarray root.buildParameters '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
+      "template": "{{igsn.substring(0,11)}}_{{joinarray params '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
       "readOnly": true,
+      "watch": {
+        "params": "root.buildParameters",
+        "igsn": "lookup"
+      },
       "propertyOrder": 2
     },
     "buildParameters": {

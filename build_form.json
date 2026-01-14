@@ -61,9 +61,13 @@
       "title": "Printer Build ID",
       "description": "Automatically generated identifier for the printer build",
       "type": "string",
-      "template": "{{joinarray root.buildParameters '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
+      "template": "{{joinarray params '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
       "readOnly": true,
-      "propertyOrder": 1
+      "propertyOrder": 1,
+      "watch": {
+        "params": "root.buildParameters",
+        "igsn": "root.lookup"
+      }
     },
     "buildParameters": {
       "title": "Build Process Parameters",

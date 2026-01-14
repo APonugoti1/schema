@@ -61,7 +61,7 @@
     "title": "Printer Build ID",
     "description": "Automatically generated identifier for the printer build",
     "type": "string",
-    "template": "{{formatBuildParams params}}",
+    "template": "{{formatBuildParams root.buildParameters}}",
     "readOnly": true,
     "propertyOrder": 2,
     "watch": {

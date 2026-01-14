@@ -4,7 +4,7 @@
   "type": "object",
   "properties": {
     "lookup": {
-    "type": "string",
+    "type": "array",
     "title": "IGSNs",
     "description": "Select one or more IGSNs",
     "minItems": 1,

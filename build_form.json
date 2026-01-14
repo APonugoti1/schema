@@ -4,28 +4,24 @@
   "type": "object",
   "properties": {
     "lookup": {
-    "type": "string",
-    "title": "IGSNs",
-    "description": "Select one or more IGSNs",
-    "minItems": 1,
-    "items": {
-      "type": "string",
-      "format": "autocomplete",
-      "options": {
-        "autocomplete": {
-          "search": "search_deposition",
-          "renderResult": "render_deposition",
-          "getResultValue": "get_deposition_value",
-          "autoSelect": true,
-          "debounceTime": 500
-        },
-        "grid_columns": 2
-      }
-    },
-    "options": {
-      "array_grid": true
-    },
-    "propertyOrder": 0
+      "type": "array",
+      "title": "IGSNs",
+      "description": "Select one or more IGSNs",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "autocomplete",
+        "options": {
+          "autocomplete": {
+            "search": "search_deposition",
+            "renderResult": "render_deposition",
+            "getResultValue": "get_deposition_value",
+            "autoSelect": true,
+            "debounceTime": 500
+          }
+        }
+      },
+      "propertyOrder": 0
     },
     "depositionId": {
       "type": "string",

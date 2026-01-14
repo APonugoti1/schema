@@ -67,3 +67,8 @@ Handlebars.registerHelper('formatBuildParams', function (params) {
         .map(p => `${p.type}:${p.laserSpeed}:${p.laserPower}:${p.layerThickness}:${p.hatchSpacing}`)
         .join('_');
 });
+
+Handlebars.registerHelper('isTypeUsed', function (selectedType, allParams) {
+    if (!allParams || !Array.isArray(allParams)) return false;
+    return allParams.some(p => p.type === selectedType);
+});

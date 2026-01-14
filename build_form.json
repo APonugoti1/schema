@@ -57,18 +57,6 @@
         "grid_columns": 12
       }
     },
-    "printerBuildID": {
-      "title": "Printer Build ID",
-      "description": "Automatically generated identifier for the printer build",
-      "type": "string",
-      "template": "{{igsn.substring(0,11)}}_{{joinarray params '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
-      "readOnly": true,
-      "watch": {
-        "params": "root.buildParameters",
-        "igsn": "lookup"
-      },
-      "propertyOrder": 2
-    },
     "buildParameters": {
       "title": "Build Process Parameters",
       "description": "Laser process parameters for all regions of the build",

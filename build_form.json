@@ -38,21 +38,6 @@
         "hidden": true
       }
     },
-    "buildId": {
-      "type": "string",
-      "title": "Build ID",
-      "description": "BLD-1: Unique identifier for the build",
-      "readOnly": true,
-      "format": "text",
-      "propertyOrder": 1,
-      "watch": {
-        "igsn": "lookup"
-      },
-      "template": "{{split igsn ' - ' 2}}",
-      "options": {
-        "grid_columns": 12
-      }
-    },
   "printerBuildID": {
     "title": "Printer Build ID",
     "description": "Automatically generated identifier for the printer build",

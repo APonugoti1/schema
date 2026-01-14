@@ -3,7 +3,7 @@
   "description": "Schema for recording metadata of builds (build parameters)",
   "type": "object",
   "properties": {
-        "lookup": {
+      "lookup": {
       "type": "string",
       "title": "IGSN",
       "description": "Lookup for the IGSN of the sample",

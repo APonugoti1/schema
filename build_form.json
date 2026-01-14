@@ -61,12 +61,11 @@
       "title": "Printer Build ID",
       "description": "Automatically generated identifier for the printer build",
       "type": "string",
-      "template": "{{joinarray params '_' (lambda x: x.type + ':' + str(x.laserSpeed) + ':' + str(x.laserPower) + ':' + str(x.layerThickness) + ':' + str(x.hatchSpacing))}}",
+      "template": "{{formatBuildParams root.buildParameters}}",
       "readOnly": true,
-      "propertyOrder": 1,
-      "watch": {
-        "params": "root.buildParameters",
-        "igsn": "root.lookup"
+      "propertyOrder": 2,
+      "options": {
+        "grid_columns": 12
       }
     },
     "buildParameters": {

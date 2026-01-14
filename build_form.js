@@ -58,3 +58,12 @@ Handlebars.registerHelper('joinarray', function (a, sep, prefix=false) {
     return result;
 });
 
+Handlebars.registerHelper('formatBuildParams', function (params) {
+    if (!params || !Array.isArray(params) || params.length === 0) {
+        return '';
+    }
+    
+    return params
+        .map(p => `${p.type}:${p.laserSpeed}:${p.laserPower}:${p.layerThickness}:${p.hatchSpacing}`)
+        .join('_');
+});

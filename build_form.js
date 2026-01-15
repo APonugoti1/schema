@@ -101,3 +101,34 @@ Each type (upskin, downskin, infill, contouring) may only appear once.`
 
   return [];
 });
+
+
+JSONEditor.defaults.custom_validators.push(function (schema, value, path) {
+  // Only validate the IGSNs field
+  if (schema.title !== "IGSNs") {
+    return [];
+  }
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set();
+  const duplicates = new Set();
+
+  value.forEach(v => {
+    if (seen.has(v)) {
+      duplicates.add(v);
+    }
+    seen.add(v);
+  });
+
+  if (duplicates.size > 0) {
+    return [{
+      path: path,
+      message: `Duplicate IGSN(s) are not allowed: ${[...duplicates].join(', ')}`
+    }];
+  }
+
+  return [];
+});

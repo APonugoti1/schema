@@ -60,6 +60,10 @@
       "minItems": 1,
       "maxItems": 4,
       "uniqueItemProperties": ["type"],
+      "validate": {
+        "type": "array",
+        "custom": "function(value, schema, parent) { \n  // Count occurrences of each type\n  var typeCount = {};\n  for (var i = 0; i < value.length; i++) {\n    var type = value[i].type;\n    typeCount[type] = (typeCount[type] || 0) + 1;\n  }\n  \n  // Check for duplicates of any type\n  var duplicateTypes = [];\n  var validTypes = ['upskin', 'downskin', 'infill', 'contouring'];\n  \n  for (var type in typeCount) {\n    if (typeCount[type] > 1) {\n      duplicateTypes.push(type);\n    }\n    // Also check if type is valid\n    if (validTypes.indexOf(type) === -1) {\n      return { \n        path: 'buildParameters', \n        property: 'type', \n        message: 'Invalid type: ' + type + '. Must be one of: ' + validTypes.join(', ') \n      };\n    }\n  }\n  \n  if (duplicateTypes.length > 0) {\n    return { \n      path: 'buildParameters', \n      property: 'uniqueItemProperties', \n      message: 'Duplicate entries found for: ' + duplicateTypes.join(', ') + '. Each type can only appear once.' \n    };\n  }\n}"
+      },
       "items": {
         "type": "object",
         "format": "grid",

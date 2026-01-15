@@ -67,3 +67,37 @@ Handlebars.registerHelper('formatBuildParams', function (params) {
         .map(p => `${p.type}:${p.laserSpeed}:${p.laserPower}:${p.layerThickness}:${p.hatchSpacing}`)
         .join('_');
 });
+
+JSONEditor.defaults.custom_validators.push(function (schema, value, path) {
+  // Only validate the buildParameters array
+  if (schema.title !== "Build Process Parameters") {
+    return [];
+  }
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set();
+  const duplicates = new Set();
+
+  value.forEach(item => {
+    if (item && item.type) {
+      if (seen.has(item.type)) {
+        duplicates.add(item.type);
+      }
+      seen.add(item.type);
+    }
+  });
+
+  if (duplicates.size > 0) {
+    return [{
+      path: path,
+      property: 'type',
+      message: `Duplicate build parameter type(s) not allowed: ${[...duplicates].join(', ')}. 
+Each type (upskin, downskin, infill, contouring) may only appear once.`
+    }];
+  }
+
+  return [];
+});

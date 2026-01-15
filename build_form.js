@@ -28,9 +28,9 @@ window.JSONEditor.defaults.callbacks.autocomplete = {
           const localId = result.metadata.alternateIdentifiers.find(
             (id) => id.alternateIdentifierType.toLowerCase() === 'local'
           );
-          return `${result.igsn} - ${result._id} - ${localId.alternateIdentifier}`;
+          return `${result.igsn}`;
         } catch (e) {
-          return `${result.igsn} - ${result._id} - no localId`;
+          return `${result.igsn}`;
         }
     }
 };

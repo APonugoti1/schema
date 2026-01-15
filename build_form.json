@@ -119,17 +119,5 @@
       }
     }
   },
-  "required": ["lookup", "buildParameters"],
-  "allOf": [
-    {
-      "not": {
-        "properties": {
-          "buildParameters": {
-            "type": "array",
-            "minItems": 5
-          }
-        }
-      }
-    }
-  ]
+  "required": ["lookup", "buildParameters"]
 }

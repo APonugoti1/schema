@@ -38,9 +38,9 @@
         "hidden": true
       }
     },
-    "printerBuildID": {
-      "title": "Printer Build ID",
-      "description": "Automatically generated identifier for the printer build",
+    "uniqueId": {
+      "title": "Unique ID",
+      "description": "Automatically generated, unique identifier for a set of build parameters",
       "type": "string",
       "template": "{{formatBuildParams params}}",
       "readOnly": true,

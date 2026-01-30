@@ -41,6 +41,7 @@
           "Tekna",
           "AP&C",
           "P&C",
+          "Protolabs",
           "Unknown"
         ]
       },
@@ -53,6 +54,7 @@
         "TEK",
         "APC",
         "PC",
+        "PRO",
         "UNK"
       ],
       "propertyOrder": 2
@@ -71,7 +73,8 @@
           "University of Virginia",
           "Case Western Reserve University",
           "Southwest Research Institute",
-          "Pratt & Whitney"
+          "Pratt & Whitney",
+          "Protolabs"
         ]
       },
       "enum": [
@@ -84,7 +87,8 @@
         "UVA",
         "CWRU",
         "SWRI",
-        "PW"
+        "PW",
+        "PRO"
       ],
       "propertyOrder": 3
     },

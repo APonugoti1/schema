@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HT_Sample Heat Treatment Record",
+  "description": "Schema for the Heat Treatment sheet of the ProcessingParam HT Sample spreadsheet.",
+  "type": "object",
+  "required": [
+    "lookup",
+    "stress_relief"
+  ],
+  "properties": {
+    "lookup": {
+      "type": "array",
+      "title": "IGSNs",
+      "description": "Select one or more IGSNs",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "autocomplete",
+        "options": {
+          "autocomplete": {
+            "search": "search_deposition",
+            "renderResult": "render_deposition",
+            "getResultValue": "get_deposition_value",
+            "autoSelect": true,
+            "debounceTime": 500
+          }
+        }
+      },
+      "propertyOrder": 0
+    },
+    "stress_relief": {
+      "type": "object",
+      "description": "Stress relief heat treatment parameters",
+      "required": [
+        "time_hr",
+        "temperature_C",
+        "ramp_up_C_per_min",
+        "cool",
+        "environment"
+      ],
+      "properties": {
+        "time_hr": {
+          "type": "number",
+          "description": "Duration of stress relief in hours",
+          "examples": [
+            2
+          ]
+        },
+        "temperature_C": {
+          "type": "number",
+          "description": "Stress relief temperature in degrees Celsius",
+          "examples": [
+            593
+          ]
+        },
+        "ramp_up_C_per_min": {
+          "type": "number",
+          "description": "Ramp-up rate in degrees Celsius per minute",
+          "examples": [
+            5
+          ]
+        },
+        "cool": {
+          "type": "string",
+          "description": "Cooling method",
+          "examples": [
+            "Furnace"
+          ]
+        },
+        "environment": {
+          "type": "string",
+          "description": "Atmospheric environment during stress relief",
+          "examples": [
+            "Ar"
+          ]
+        }
+      }
+    },
+    "heat_treatment": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Final heat treatment parameters (null if not applied to this sample)",
+      "required": [
+        "time_hr",
+        "temperature_C",
+        "ramp_up_C_per_min",
+        "cool",
+        "environment"
+      ],
+      "properties": {
+        "time_hr": {
+          "type": "number",
+          "description": "Duration of heat treatment in hours",
+          "examples": [
+            2
+          ]
+        },
+        "temperature_C": {
+          "type": "number",
+          "description": "Heat treatment temperature in degrees Celsius",
+          "examples": [
+            820
+          ]
+        },
+        "ramp_up_C_per_min": {
+          "type": "number",
+          "description": "Ramp-up rate in degrees Celsius per minute",
+          "examples": [
+            5
+          ]
+        },
+        "cool": {
+          "type": "string",
+          "description": "Cooling method",
+          "examples": [
+            "Furnace"
+          ]
+        },
+        "environment": {
+          "type": "string",
+          "description": "Atmospheric environment during heat treatment",
+          "examples": [
+            "Ar"
+          ]
+        }
+      }
+    }
+  }
+}

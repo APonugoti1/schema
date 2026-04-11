@@ -117,10 +117,10 @@
         "title": {
           "type": "string",
           "title": "Sample Name",
-          "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{index (split (index rawPowderID 0) '_') 1}}{{joinarray extraInfo '_' true}}",
+          "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{material}}{{joinarray extraInfo '_' true}}",
           "watch": {
             "params": "root.userParameters",
-            "rawPowderID": "root.rawPowderID",
+            "material": "root.buildPlate.material",
             "extraInfo": "root.extraInfo"
           },
           "readOnly": true,

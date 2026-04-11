@@ -117,10 +117,10 @@
         "title": {
           "type": "string",
           "title": "Sample Name",
-          "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{material}}{{joinarray extraInfo '_' true}}",
+          "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{index (split (index rawPowderID 0) '_') 1}}{{joinarray extraInfo '_' true}}",
           "watch": {
             "params": "root.userParameters",
-            "material": "root.buildPlate.material",
+            "rawPowderID": "root.rawPowderID",
             "extraInfo": "root.extraInfo"
           },
           "readOnly": true,
@@ -440,10 +440,10 @@
       "title": "Printer Build ID",
       "description": "BLD-1: Automatically generated identifier for the printer build",
       "type": "string",
-      "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{material}}{{joinarray extraInfo '_' true}}",
+      "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{index (split (index rawPowderID 0) '_') 1}}{{joinarray extraInfo '_' true}}",
       "watch": {
         "params": "root.userParameters",
-        "material": "root.buildPlate.material",
+        "rawPowderID": "root.rawPowderID",
         "extraInfo": "root.extraInfo"
       },
       "readOnly": true,

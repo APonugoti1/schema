@@ -12,6 +12,7 @@
       "type": "array",
       "title": "IGSNs",
       "description": "Select one or more IGSNs",
+      "notes": "Search and select one or more IGSN identifiers associated with this sample. At least one IGSN must be provided.",
       "minItems": 1,
       "items": {
         "type": "string",
@@ -30,7 +31,10 @@
     },
     "stress_relief": {
       "type": "object",
+      "title": "Stress Relief",
       "description": "Stress relief heat treatment parameters",
+      "notes": "Stress relief is a mandatory step. Record the thermal cycle used to reduce residual stresses after fabrication.",
+      "format": "grid-strict",
       "required": [
         "time_hr",
         "temperature_C",
@@ -41,87 +45,135 @@
       "properties": {
         "time_hr": {
           "type": "number",
+          "title": "Time (hr)",
           "description": "Duration of stress relief in hours",
-          "examples": [2]
+          "examples": [2],
+          "options": { "grid_columns": 4 },
+          "propertyOrder": 0
         },
         "temperature_C": {
           "type": "number",
+          "title": "Temperature (°C)",
           "description": "Stress relief temperature in degrees Celsius",
-          "examples": [593]
+          "examples": [593],
+          "options": { "grid_columns": 4 },
+          "propertyOrder": 1
         },
         "ramp_up_C_per_min": {
           "type": "number",
+          "title": "Ramp Up (°C/min)",
           "description": "Ramp-up rate in degrees Celsius per minute",
-          "examples": [5]
+          "examples": [5],
+          "options": { "grid_columns": 4 },
+          "propertyOrder": 2
         },
         "cool": {
           "type": "string",
-          "description": "Cooling method",
-          "examples": ["Furnace"]
+          "title": "Cooling Method",
+          "description": "Cooling method after hold",
+          "examples": ["Furnace"],
+          "options": { "grid_columns": 4 },
+          "propertyOrder": 3
         },
         "environment": {
           "type": "string",
+          "title": "Environment",
           "description": "Atmospheric environment during stress relief",
-          "examples": ["Ar"]
+          "examples": ["Ar"],
+          "options": { "grid_columns": 4 },
+          "propertyOrder": 4
         }
       }
     },
     "heat_treatment": {
-      "type": ["object", "null"],
-      "description": "Final heat treatment parameters (null if not applied to this sample)",
-      "required": [
-        "time_hr",
-        "temperature_C",
-        "ramp_up_C_per_min",
-        "cool",
-        "environment"
-      ],
-      "properties": {
-        "time_hr": {
-          "type": "number",
-          "description": "Duration of heat treatment in hours",
-          "examples": [2]
-        },
-        "temperature_C": {
-          "type": "number",
-          "description": "Heat treatment temperature in degrees Celsius",
-          "examples": [820]
-        },
-        "ramp_up_C_per_min": {
-          "type": "number",
-          "description": "Ramp-up rate in degrees Celsius per minute",
-          "examples": [5]
-        },
-        "cool": {
-          "type": "string",
-          "description": "Cooling method",
-          "examples": ["Furnace"]
-        },
-        "environment": {
-          "type": "string",
-          "description": "Atmospheric environment during heat treatment",
-          "examples": ["Ar"]
-        },
-        "HIP": {
-          "description": "Hot Isostatic Pressing — indicate whether the sample was HIPed",
-          "oneOf": [
-            {
-              "title": "Not HIPed",
-              "type": "null"
-            },
-            {
-              "title": "HIPed",
-              "type": "object",
-              "required": ["pressure_MPa"],
-              "properties": {
-                "pressure_MPa": {
-                  "type": "number",
-                  "description": "HIP pressure in megapascals",
-                  "examples": [100]
+      "type": "array",
+      "title": "Heat Treatment",
+      "description": "One or more heat treatment entries for this sample",
+      "notes": "Add one or more heat treatment cycles applied to this sample after stress relief. Each entry represents a distinct thermal cycle. Leave this section empty if no further heat treatment was performed.",
+      "format": "tabs",
+      "options": {
+        "collapsed": false
+      },
+      "propertyOrder": 2,
+      "items": {
+        "type": "object",
+        "title": "Heat Treatment Entry",
+        "format": "grid-strict",
+        "required": [
+          "time_hr",
+          "temperature_C",
+          "ramp_up_C_per_min",
+          "cool",
+          "environment"
+        ],
+        "properties": {
+          "time_hr": {
+            "type": "number",
+            "title": "Time (hr)",
+            "description": "Duration of heat treatment in hours",
+            "examples": [2],
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 0
+          },
+          "temperature_C": {
+            "type": "number",
+            "title": "Temperature (°C)",
+            "description": "Heat treatment temperature in degrees Celsius",
+            "examples": [820],
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 1
+          },
+          "ramp_up_C_per_min": {
+            "type": "number",
+            "title": "Ramp Up (°C/min)",
+            "description": "Ramp-up rate in degrees Celsius per minute",
+            "examples": [5],
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 2
+          },
+          "cool": {
+            "type": "string",
+            "title": "Cooling Method",
+            "description": "Cooling method after hold",
+            "examples": ["Furnace"],
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 3
+          },
+          "environment": {
+            "type": "string",
+            "title": "Environment",
+            "description": "Atmospheric environment during heat treatment",
+            "examples": ["Ar"],
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 4
+          },
+          "HIP": {
+            "title": "HIP",
+            "description": "Hot Isostatic Pressing — indicate whether the sample was HIPed",
+            "notes": "Select 'HIPed' if Hot Isostatic Pressing was applied. Select 'Not HIPed' if HIP was not performed.",
+            "options": { "grid_columns": 4 },
+            "propertyOrder": 5,
+            "oneOf": [
+              {
+                "title": "Not HIPed",
+                "type": "null"
+              },
+              {
+                "title": "HIPed",
+                "type": "object",
+                "required": ["pressure_MPa"],
+                "properties": {
+                  "pressure_MPa": {
+                    "type": "number",
+                    "title": "Pressure (MPa)",
+                    "description": "HIP pressure in megapascals",
+                    "examples": [100],
+                    "options": { "grid_columns": 4 }
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         }
       }
     }

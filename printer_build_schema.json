@@ -440,10 +440,10 @@
       "title": "Printer Build ID",
       "description": "BLD-1: Automatically generated identifier for the printer build",
       "type": "string",
-      "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{material}}{{joinarray extraInfo '_' true}}",
+      "template": "{{replaceAll params.runDate '-' ''}}_{{params.location}}_{{alloy}}{{joinarray extraInfo '_' true}}",
       "watch": {
         "params": "root.userParameters",
-        "material": "root.buildPlate.material",
+        "alloy": "root.alloy",
         "extraInfo": "root.extraInfo"
       },
       "readOnly": true,
@@ -467,6 +467,19 @@
         "enumSource": "girder.formId:663e6d21b18fa1c426e939ab"
       },
       "propertyOrder": 3
+    },
+    "alloy": {
+      "title": "Powder Alloy",
+      "type": "string",
+      "propertyOrder": 4,
+      "watch": {
+        "powder": "root.rawPowderID"
+      },
+      "template": "{{entryField (split powder ';' 0) 'alloy'}}",
+      "options": {
+        "hidden": true,
+        "preload": "girder.formId:680aaacd152b337e6d25001f:alloy"
+      }
     },
     "buildGeometries": {
       "title": "Build Geometries",
@@ -621,7 +634,7 @@
       ],
       "propertyOrder": 10
     },
-    "userParameters": {
+        "userParameters": {
       "title": "User Parameters",
       "type": "object",
       "format": "grid",

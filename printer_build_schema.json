@@ -478,7 +478,7 @@
       "template": "{{entryField (split powder ';' 0) 'alloy'}}",
       "options": {
         "hidden": true,
-        "preload": "girder.formId:680aaacd152b337e6d25001f:alloy"
+        "preload": "girder.formId:663e6d21b18fa1c426e939ab"
       }
     },
     "buildGeometries": {

@@ -475,7 +475,7 @@
       "watch": {
         "powder": "root.alloy"
       },
-      "template": "{{entryField (split powder ';' 0) 'alloy'}}",
+      "template": "{{entryField powder 'alloy'}}",
       "options": {
         "hidden": true,
         "preload": "girder.formId:663e6d21b18fa1c426e939ab:alloy"

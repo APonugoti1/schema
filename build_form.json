@@ -155,7 +155,8 @@
                 }
               }
             },
-            "required": ["laserSpeed"]
+            "required": ["laserSpeed"],
+            "not": { "required": ["pulseDistance", "exposureTime"] }
           },
           {
             "title": "Pulsed (Distance & Exposure)",
@@ -181,7 +182,8 @@
                 }
               }
             },
-            "required": ["pulseDistance", "exposureTime"]
+            "required": ["pulseDistance", "exposureTime"],
+            "not": { "required": ["laserSpeed"] }
           }
         ],
         "required": ["type", "laserPower", "layerThickness", "hatchSpacing"],

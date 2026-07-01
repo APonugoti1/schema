@@ -59,9 +59,7 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 4,
-      "uniqueItemProperties": [
-        "type"
-      ],
+      "uniqueItemProperties": ["type"],
       "items": {
         "type": "object",
         "format": "grid",
@@ -72,14 +70,19 @@
           "type": {
             "type": "string",
             "title": "Region Type",
-            "enum": [
-              "upskin",
-              "downskin",
-              "infill",
-              "contouring"
-            ],
+            "enum": ["upskin", "downskin", "infill", "contouring"],
             "description": "Type of build region",
             "propertyOrder": 1
+          },
+          "laserSpeed": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "PRC-3-2-9",
+            "propertyOrder": 2,
+            "options": {
+              "grid_row": 12
+            }
           },
           "laserPower": {
             "type": "number",
@@ -115,6 +118,7 @@
             }
           }
         },
+        "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"],
         "oneOf": [
           {
             "title": "Continuous (Laser Speed)",
@@ -131,9 +135,7 @@
                 }
               }
             },
-            "required": [
-              "laserSpeed"
-            ]
+            "required": ["laserSpeed"]
           },
           {
             "title": "Pulsed (Distance & Exposure)",
@@ -159,24 +161,14 @@
                 }
               }
             },
-            "required": [
-              "pulseDistance",
-              "exposureTime"
-            ]
+            "required": ["pulseDistance", "exposureTime"]
           }
         ],
-        "required": [
-          "type",
-          "laserPower",
-          "layerThickness",
-          "hatchSpacing"
-        ],
+        "required": ["type", "laserPower", "layerThickness", "hatchSpacing"],
         "additionalProperties": false
       }
     }
   },
-  "required": [
-    "lookup",
-    "buildParameters"
-  ]
+  "required": ["lookup", "buildParameters"]
+}
 }

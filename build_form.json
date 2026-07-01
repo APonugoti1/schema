@@ -59,7 +59,9 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 4,
-      "uniqueItemProperties": ["type"],
+      "uniqueItemProperties": [
+        "type"
+      ],
       "items": {
         "type": "object",
         "format": "grid",
@@ -70,7 +72,12 @@
           "type": {
             "type": "string",
             "title": "Region Type",
-            "enum": ["upskin", "downskin", "infill", "contouring"],
+            "enum": [
+              "upskin",
+              "downskin",
+              "infill",
+              "contouring"
+            ],
             "description": "Type of build region",
             "propertyOrder": 1
           },
@@ -106,37 +113,6 @@
             "options": {
               "grid_row": 12
             }
-          },
-          "laserSpeed": {
-            "type": "number",
-            "title": "Laser Speed (mm/s)",
-            "minimum": 0,
-            "maximum": 10000,
-            "description": "PRC-3-2-9",
-            "propertyOrder": 2,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "pulseDistance": {
-            "type": "number",
-            "title": "Pulse Distance (µm)",
-            "minimum": 0,
-            "description": "Distance between laser pulses",
-            "propertyOrder": 2,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "exposureTime": {
-            "type": "number",
-            "title": "Exposure Time (µs)",
-            "minimum": 0,
-            "description": "Duration of laser pulse",
-            "propertyOrder": 2.1,
-            "options": {
-              "grid_row": 12
-            }
           }
         },
         "oneOf": [
@@ -155,8 +131,9 @@
                 }
               }
             },
-            "required": ["laserSpeed"],
-            "not": { "required": ["pulseDistance", "exposureTime"] }
+            "required": [
+              "laserSpeed"
+            ]
           },
           {
             "title": "Pulsed (Distance & Exposure)",
@@ -182,14 +159,24 @@
                 }
               }
             },
-            "required": ["pulseDistance", "exposureTime"],
-            "not": { "required": ["laserSpeed"] }
+            "required": [
+              "pulseDistance",
+              "exposureTime"
+            ]
           }
         ],
-        "required": ["type", "laserPower", "layerThickness", "hatchSpacing"],
+        "required": [
+          "type",
+          "laserPower",
+          "layerThickness",
+          "hatchSpacing"
+        ],
         "additionalProperties": false
       }
     }
   },
-  "required": ["lookup", "buildParameters"]
+  "required": [
+    "lookup",
+    "buildParameters"
+  ]
 }

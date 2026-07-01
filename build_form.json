@@ -106,6 +106,37 @@
             "options": {
               "grid_row": 12
             }
+          },
+          "laserSpeed": {
+            "type": "number",
+            "title": "Laser Speed (mm/s)",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "PRC-3-2-9",
+            "propertyOrder": 2,
+            "options": {
+              "grid_row": 12
+            }
+          },
+          "pulseDistance": {
+            "type": "number",
+            "title": "Pulse Distance (µm)",
+            "minimum": 0,
+            "description": "Distance between laser pulses",
+            "propertyOrder": 2,
+            "options": {
+              "grid_row": 12
+            }
+          },
+          "exposureTime": {
+            "type": "number",
+            "title": "Exposure Time (µs)",
+            "minimum": 0,
+            "description": "Duration of laser pulse",
+            "propertyOrder": 2.1,
+            "options": {
+              "grid_row": 12
+            }
           }
         },
         "oneOf": [

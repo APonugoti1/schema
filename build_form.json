@@ -66,87 +66,125 @@
         "options": {
           "grid_columns": 12
         },
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["upskin", "downskin", "infill", "contouring"],
-            "description": "Type of build region",
-            "propertyOrder": 1
-          },
-          "laserSpeed": {
-            "type": "number",
-            "title": "Laser Speed",
-            "minimum": 0,
-            "maximum": 10000,
-            "description": "PRC-3-2-9",
-            "propertyOrder": 2,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "pulseDistance": {
-            "type": "number",
-            "title": "Pulse Distance",
-            "minimum": 0,
-            "description": "Distance between laser pulses",
-            "propertyOrder": 2,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "exposureTime": {
-            "type": "number",
-            "title": "Exposure Time",
-            "minimum": 0,
-            "description": "Duration of laser pulse",
-            "propertyOrder": 2.1,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "laserPower": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 370,
-            "description": "PRC-3-2-3",
-            "propertyOrder": 3,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "layerThickness": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "PRC-3-2-1",
-            "propertyOrder": 4,
-            "options": {
-              "grid_row": 12
-            }
-          },
-          "hatchSpacing": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 300,
-            "description": "PRC-3-2-6",
-            "propertyOrder": 5,
-            "options": {
-              "grid_row": 12
-            }
-          }
-        },
         "oneOf": [
           {
             "title": "Continuous (Laser Speed)",
-            "required": ["laserSpeed"]
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["upskin", "downskin", "infill", "contouring"],
+                "description": "Type of build region",
+                "propertyOrder": 1
+              },
+              "laserSpeed": {
+                "type": "number",
+                "title": "Laser Speed",
+                "minimum": 0,
+                "maximum": 10000,
+                "description": "PRC-3-2-9",
+                "propertyOrder": 2,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "laserPower": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 370,
+                "description": "PRC-3-2-3",
+                "propertyOrder": 3,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "layerThickness": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "PRC-3-2-1",
+                "propertyOrder": 4,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "hatchSpacing": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 300,
+                "description": "PRC-3-2-6",
+                "propertyOrder": 5,
+                "options": {
+                  "grid_row": 12
+                }
+              }
+            },
+            "required": ["type", "laserPower", "layerThickness", "hatchSpacing", "laserSpeed"],
+            "additionalProperties": false
           },
           {
             "title": "Pulsed (Distance & Exposure)",
-            "required": ["pulseDistance", "exposureTime"]
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["upskin", "downskin", "infill", "contouring"],
+                "description": "Type of build region",
+                "propertyOrder": 1
+              },
+              "pulseDistance": {
+                "type": "number",
+                "title": "Pulse Distance",
+                "minimum": 0,
+                "description": "Distance between laser pulses",
+                "propertyOrder": 2,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "exposureTime": {
+                "type": "number",
+                "title": "Exposure Time",
+                "minimum": 0,
+                "description": "Duration of laser pulse",
+                "propertyOrder": 2.1,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "laserPower": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 370,
+                "description": "PRC-3-2-3",
+                "propertyOrder": 3,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "layerThickness": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "PRC-3-2-1",
+                "propertyOrder": 4,
+                "options": {
+                  "grid_row": 12
+                }
+              },
+              "hatchSpacing": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 300,
+                "description": "PRC-3-2-6",
+                "propertyOrder": 5,
+                "options": {
+                  "grid_row": 12
+                }
+              }
+            },
+            "required": ["type", "laserPower", "layerThickness", "hatchSpacing", "pulseDistance", "exposureTime"],
+            "additionalProperties": false
           }
-        ],
-        "required": ["type", "laserPower", "layerThickness", "hatchSpacing"],
-        "additionalProperties": false
+        ]
       }
     }
   },

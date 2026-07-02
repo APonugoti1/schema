@@ -69,24 +69,12 @@
         "properties": {
           "type": {
             "type": "string",
-            "title": "Region Type",
             "enum": ["upskin", "downskin", "infill", "contouring"],
             "description": "Type of build region",
             "propertyOrder": 1
           },
-          "laserSpeed": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 10000,
-            "description": "PRC-3-2-9",
-            "propertyOrder": 2,
-            "options": {
-              "grid_row": 12
-            }
-          },
           "laserPower": {
             "type": "number",
-            "title": "Laser Power (W)",
             "minimum": 0,
             "maximum": 370,
             "description": "PRC-3-2-3",
@@ -97,7 +85,6 @@
           },
           "layerThickness": {
             "type": "number",
-            "title": "Layer Thickness (µm)",
             "minimum": 0,
             "maximum": 100,
             "description": "PRC-3-2-1",
@@ -108,7 +95,6 @@
           },
           "hatchSpacing": {
             "type": "number",
-            "title": "Hatch Spacing (µm)",
             "minimum": 0,
             "maximum": 300,
             "description": "PRC-3-2-6",
@@ -118,14 +104,13 @@
             }
           }
         },
-        "required": ["type", "laserSpeed", "laserPower", "layerThickness", "hatchSpacing"],
         "oneOf": [
           {
             "title": "Continuous (Laser Speed)",
             "properties": {
               "laserSpeed": {
                 "type": "number",
-                "title": "Laser Speed (mm/s)",
+                "title": "Laser Speed",
                 "minimum": 0,
                 "maximum": 10000,
                 "description": "PRC-3-2-9",
@@ -142,7 +127,7 @@
             "properties": {
               "pulseDistance": {
                 "type": "number",
-                "title": "Pulse Distance (µm)",
+                "title": "Pulse Distance",
                 "minimum": 0,
                 "description": "Distance between laser pulses",
                 "propertyOrder": 2,
@@ -152,7 +137,7 @@
               },
               "exposureTime": {
                 "type": "number",
-                "title": "Exposure Time (µs)",
+                "title": "Exposure Time",
                 "minimum": 0,
                 "description": "Duration of laser pulse",
                 "propertyOrder": 2.1,
@@ -170,5 +155,4 @@
     }
   },
   "required": ["lookup", "buildParameters"]
-}
 }

@@ -73,6 +73,37 @@
             "description": "Type of build region",
             "propertyOrder": 1
           },
+          "laserSpeed": {
+            "type": "number",
+            "title": "Laser Speed",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "PRC-3-2-9",
+            "propertyOrder": 2,
+            "options": {
+              "grid_row": 12
+            }
+          },
+          "pulseDistance": {
+            "type": "number",
+            "title": "Pulse Distance",
+            "minimum": 0,
+            "description": "Distance between laser pulses",
+            "propertyOrder": 2,
+            "options": {
+              "grid_row": 12
+            }
+          },
+          "exposureTime": {
+            "type": "number",
+            "title": "Exposure Time",
+            "minimum": 0,
+            "description": "Duration of laser pulse",
+            "propertyOrder": 2.1,
+            "options": {
+              "grid_row": 12
+            }
+          },
           "laserPower": {
             "type": "number",
             "minimum": 0,
@@ -107,45 +138,10 @@
         "oneOf": [
           {
             "title": "Continuous (Laser Speed)",
-            "properties": {
-              "laserSpeed": {
-                "type": "number",
-                "title": "Laser Speed",
-                "minimum": 0,
-                "maximum": 10000,
-                "description": "PRC-3-2-9",
-                "propertyOrder": 2,
-                "options": {
-                  "grid_row": 12
-                }
-              }
-            },
             "required": ["laserSpeed"]
           },
           {
             "title": "Pulsed (Distance & Exposure)",
-            "properties": {
-              "pulseDistance": {
-                "type": "number",
-                "title": "Pulse Distance",
-                "minimum": 0,
-                "description": "Distance between laser pulses",
-                "propertyOrder": 2,
-                "options": {
-                  "grid_row": 12
-                }
-              },
-              "exposureTime": {
-                "type": "number",
-                "title": "Exposure Time",
-                "minimum": 0,
-                "description": "Duration of laser pulse",
-                "propertyOrder": 2.1,
-                "options": {
-                  "grid_row": 12
-                }
-              }
-            },
             "required": ["pulseDistance", "exposureTime"]
           }
         ],

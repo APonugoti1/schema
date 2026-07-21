@@ -39,29 +39,40 @@ Handlebars.registerHelper('formatHTParamsShort', function (stress_relief, heat_t
     if (!stress_relief) {
         return '';
     }
-    
+
     // Build SR params array - include units/labels with values
     const srPartsArray = [];
-    
+
     if (stress_relief.time_hr) srPartsArray.push(`${stress_relief.time_hr}hr`);
     if (stress_relief.temperature_C) srPartsArray.push(`${stress_relief.temperature_C}C`);
     if (stress_relief.ramp_up_C_per_min) srPartsArray.push(`${stress_relief.ramp_up_C_per_min}rpm`);
     if (stress_relief.cooling_method) srPartsArray.push(`${stress_relief.cooling_method.substring(0, 1).toUpperCase()}${stress_relief.cooling_method.substring(1).toLowerCase()}`);
     if (stress_relief.environment) srPartsArray.push(`${stress_relief.environment}`);
-    
+
     const srParams = srPartsArray.join('-');
-    
+
+    const formatHipPressure = function (pressure_MPa) {
+      if (pressure_MPa === undefined || pressure_MPa === null || pressure_MPa === '') {
+        return '';
+      }
+
+      const pressureGPa = Number(pressure_MPa) / 1000;
+      if (Number.isNaN(pressureGPa)) {
+        return '';
+      }
+
+      const formattedPressure = Number.isInteger(pressureGPa)
+        ? `${pressureGPa}`
+        : `${parseFloat(pressureGPa.toFixed(3))}`;
+
+      return `HIP-${formattedPressure}GPa`;
+    };
+
     // Heat Treatment parameters
     let htParams = '';
-    let hasHIP = false;
-    
+
     if (heat_treatment && Array.isArray(heat_treatment) && heat_treatment.length > 0) {
         const htPartsArray = heat_treatment.map(ht => {
-            // Check if HIP was applied
-            if (ht.HIP && typeof ht.HIP === 'object' && ht.HIP.pressure_MPa) {
-                hasHIP = true;
-            }
-            
             // Build HT params array - include units/labels with values
             const htSubArray = [];
             if (ht.time_hr) htSubArray.push(`${ht.time_hr}hr`);
@@ -69,24 +80,27 @@ Handlebars.registerHelper('formatHTParamsShort', function (stress_relief, heat_t
             if (ht.ramp_up_C_per_min) htSubArray.push(`${ht.ramp_up_C_per_min}rpm`);
             if (ht.cooling_method) htSubArray.push(`${ht.cooling_method.substring(0, 1).toUpperCase()}${ht.cooling_method.substring(1).toLowerCase()}`);
             if (ht.environment) htSubArray.push(`${ht.environment}`);
-            
+
+        if (ht.HIP && typeof ht.HIP === 'object') {
+          const hipLabel = formatHipPressure(ht.HIP.pressure_MPa);
+          if (hipLabel) {
+            htSubArray.push(hipLabel);
+          }
+        }
+
             return htSubArray.join('-');
         });
-        
+
         htParams = htPartsArray.join('_');
     }
-    
+
     // Final format: HT_[SR params]_SR[_HT params][_hipped]
     let result = `HT_${srParams}_SR`;
-    
+
     if (htParams) {
         result += `_${htParams}`;
     }
-    
-    if (hasHIP) {
-        result += `_hipped`;
-    }
-    
+
     return result;
 });
 

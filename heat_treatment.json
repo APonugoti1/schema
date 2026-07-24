@@ -9,6 +9,40 @@
     "heat_treatment"
   ],
   "definitions": {
+    "files": {
+      "$id": "files",
+      "type": "object",
+      "format": "grid",
+      "properties": {
+        "targetPath": {
+          "type": "string",
+          "title": "Target Path",
+          "watch": {
+            "hid": "root.heat_treatment_id"
+          },
+          "options": {
+            "hidden": true
+          },
+          "template": "{{hid}}"
+        },
+        "file": {
+          "type": "string",
+          "propertyOrder": 1,
+          "title": "Upload files"
+        },
+        "button": {
+          "title": "Browse",
+          "format": "button",
+          "propertyOrder": 2,
+          "options": {
+            "button": {
+              "action": "button1CB",
+              "uploadFor": "file"
+            }
+          }
+        }
+      }
+    },
     "heating_process": {
       "type": "object",
       "format": "grid-strict",
@@ -54,6 +88,12 @@
           "description": "Atmospheric environment during process (e.g., Ar, N2, Vacuum)",
           "options": { "grid_columns": 4 },
           "propertyOrder": 4
+        },
+        "files": {
+          "title": "Related files",
+          "description": "Upload any relevant files for this stage. Make sure they have unique names.",
+          "$ref": "#/definitions/files",
+          "propertyOrder": 5
         }
       }
     }

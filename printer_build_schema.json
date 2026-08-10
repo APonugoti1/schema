@@ -293,7 +293,8 @@
             "FCG",
             "MC",
             "RBF",
-            "C"
+            "C",
+            "SQP"
           ],
           "options": {
             "grid_columns": 6,
@@ -306,7 +307,8 @@
               "FCG (fatigue crack growth)",
               "MC (Microstructure cubes)",
               "RBF (Rotating beam fatigue)",
-              "C (Composition)"
+              "C (Composition)",
+              "SQP (Square Prisms)"
             ]
           },
           "propertyOrder": 0,

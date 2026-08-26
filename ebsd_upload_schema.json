@@ -1,0 +1,132 @@
+{
+  "title": "EBSD Upload",
+  "description": "Upload EBSD files for a selected sample IGSN. Datatype metadata should be assigned by workflow based on file extension.",
+  "type": "object",
+  "definitions": {
+    "fileUpload": {
+      "title": "File",
+      "type": "object",
+      "format": "grid",
+      "properties": {
+        "file": {
+          "title": "Uploaded File ID",
+          "type": "string",
+          "propertyOrder": 1,
+          "links": [
+            {
+              "rel": "View",
+              "title": "View",
+              "href": "/api/v1/file/{{self}}/download?contentDisposition=inline",
+              "class": "girder-file-link"
+            },
+            {
+              "rel": "Download",
+              "title": "Download",
+              "href": "/api/v1/file/{{self}}/download",
+              "download": true,
+              "class": "girder-file-link"
+            }
+          ]
+        },
+        "button": {
+          "title": "Click to Upload",
+          "format": "button",
+          "options": {
+            "button": {
+              "action": "button1CB",
+              "uploadFor": "file"
+            }
+          },
+          "propertyOrder": 2
+        },
+        "targetPath": {
+          "type": "string",
+          "title": "Target Path",
+          "watch": {
+            "path": "root.sampleIGSN"
+          },
+          "template": "{{path}}",
+          "options": {
+            "hidden": true
+          },
+          "propertyOrder": 3
+        }
+      },
+      "required": [
+        "file"
+      ]
+    }
+  },
+  "properties": {
+    "lookup": {
+      "type": "string",
+      "title": "IGSN",
+      "description": "Lookup the target sample IGSN.",
+      "format": "autocomplete",
+      "options": {
+        "autocomplete": {
+          "search": "search_deposition",
+          "renderResult": "render_deposition",
+          "getResultValue": "get_deposition_value",
+          "autoSelect": true,
+          "debounceTime": 500
+        }
+      },
+      "propertyOrder": 0
+    },
+    "sampleIGSN": {
+      "type": "string",
+      "title": "Sample IGSN",
+      "description": "Resolved IGSN from lookup.",
+      "readOnly": true,
+      "watch": {
+        "igsn": "lookup"
+      },
+      "template": "{{split igsn ' - ' 0}}",
+      "options": {
+        "hidden": true
+      },
+      "propertyOrder": 1
+    },
+    "depositionId": {
+      "type": "string",
+      "title": "Deposition ID",
+      "description": "Resolved deposition ID from lookup.",
+      "readOnly": true,
+      "watch": {
+        "igsn": "lookup"
+      },
+      "template": "{{split igsn ' - ' 1}}",
+      "options": {
+        "hidden": true
+      },
+      "propertyOrder": 2
+    },
+    "uploadNotes": {
+      "type": "string",
+      "title": "Supported File Types",
+      "default": ".ang, .ctf, .m, .jpg, .jpeg, .png",
+      "readOnly": true,
+      "options": {
+        "input_width": "100%"
+      },
+      "propertyOrder": 3
+    },
+    "files": {
+      "type": "array",
+      "title": "EBSD Files",
+      "description": "Upload one or more EBSD files. Workflow should assign datatype by extension: .ang/.ctf -> EBSD_Raw, .m -> EBSD_Scripts, .jpg/.jpeg/.png -> EBSD_Derived.",
+      "minItems": 1,
+      "items": {
+        "headerTemplate": "File {{i1}}",
+        "$ref": "#/definitions/fileUpload"
+      },
+      "propertyOrder": 4,
+      "format": "grid"
+    }
+  },
+  "required": [
+    "lookup",
+    "files"
+  ]
+}

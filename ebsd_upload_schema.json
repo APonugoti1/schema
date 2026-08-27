@@ -3,100 +3,136 @@
   "description": "Upload EBSD files for a selected sample IGSN. Datatype metadata should be assigned by workflow based on file extension.",
   "type": "object",
   "definitions": {
-    "fileUpload": {
-      "title": "File",
+    "folderUpload": {
+      "title": "Folder",
       "type": "object",
       "format": "grid",
       "properties": {
-        "file": {
-          "title": "Uploaded File ID",
+        "folder": {
+          "title": "Uploaded Folder ID",
           "type": "string",
           "propertyOrder": 1,
           "links": [
             {
               "rel": "View",
-              "title": "View",
-              "href": "/api/v1/file/{{self}}/download?contentDisposition=inline",
+              "title": "View Contents",
+              "href": "/api/v1/folder/{{self}}/listing",
               "class": "girder-file-link"
             },
             {
               "rel": "Download",
               "title": "Download",
-              "href": "/api/v1/file/{{self}}/download",
+              "href": "/api/v1/folder/{{self}}/download",
               "download": true,
               "class": "girder-file-link"
             }
           ]
         },
         "button": {
-          "title": "Click to Upload",
+          "title": "Click to Upload Folder",
           "format": "button",
           "options": {
             "button": {
               "action": "button1CB",
-              "uploadFor": "file"
+              "uploadFor": "folder"
             }
           },
           "propertyOrder": 2
+        },
+        "assignMetadata": {
+          "title": "Add EBSD Metadata",
+          "format": "button",
+          "options": {
+            "button": {
+              "action": "assignEbsdMetadataCB",
+              "dependencies": {
+                "folder": true
+              }
+            }
+          },
+          "propertyOrder": 3
+        },
+        "assignIgsn": {
+          "title": "Add Selected IGSNs Recursively",
+          "format": "button",
+          "options": {
+            "button": {
+              "action": "assignSelectedIgsnsRecursiveCB",
+              "dependencies": {
+                "folder": true,
+                "igsns": true
+              }
+            }
+          },
+          "watch": {
+            "igsns": "root.lookup"
+          },
+          "propertyOrder": 4
         },
         "targetPath": {
           "type": "string",
           "title": "Target Path",
           "watch": {
-            "path": "root.sampleIGSN"
+            "path": "root.uniqueId"
           },
           "template": "{{path}}",
           "options": {
             "hidden": true
           },
-          "propertyOrder": 3
+          "propertyOrder": 5
         }
       },
       "required": [
-        "file"
+        "folder"
       ]
     }
   },
   "properties": {
     "lookup": {
-      "type": "string",
-      "title": "IGSN",
-      "description": "Lookup the target sample IGSN.",
-      "format": "autocomplete",
-      "options": {
-        "autocomplete": {
-          "search": "search_deposition",
-          "renderResult": "render_deposition",
-          "getResultValue": "get_deposition_value",
-          "autoSelect": true,
-          "debounceTime": 500
+      "type": "array",
+      "title": "IGSNs",
+      "description": "Select one or more target sample IGSNs.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "autocomplete",
+        "options": {
+          "autocomplete": {
+            "search": "search_deposition",
+            "renderResult": "render_deposition",
+            "getResultValue": "get_deposition_value",
+            "autoSelect": true,
+            "debounceTime": 500
+          }
         }
       },
       "propertyOrder": 0
     },
-    "sampleIGSN": {
+    "uniqueId": {
       "type": "string",
-      "title": "Sample IGSN",
-      "description": "Resolved IGSN from lookup.",
+      "title": "Unique ID",
+      "description": "Auto-generated unique identifier for this EBSD upload entry using the selected IGSNs and uploaded folder.",
       "readOnly": true,
       "watch": {
-        "igsn": "lookup"
+        "igsns": "lookup",
+        "folder": "uploadFolder.folder"
       },
-      "template": "{{split igsn ' - ' 0}}",
+      "template": "EBSD_{{ebsdBatchId igsns folder}}",
       "options": {
         "hidden": true
       },
       "propertyOrder": 1
     },
-    "depositionId": {
-      "type": "string",
-      "title": "Deposition ID",
-      "description": "Resolved deposition ID from lookup.",
+    "selectedIGSNs": {
+      "type": "array",
+      "title": "Selected IGSNs",
+      "description": "All selected IGSNs used for recursive folder-level assignment.",
       "readOnly": true,
       "watch": {
-        "igsn": "lookup"
+        "igsns": "lookup"
       },
-      "template": "{{split igsn ' - ' 1}}",
+      "template": "{{selectedIgsnList igsns}}",
       "options": {
         "hidden": true
       },
@@ -105,28 +141,23 @@
     "uploadNotes": {
       "type": "string",
       "title": "Supported File Types",
-      "default": ".ang, .ctf, .m, .jpg, .jpeg, .png",
+      "default": "Upload one EBSD folder containing .ang, .ctf, .m, .jpg, .jpeg, and .png files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in the folder, and Add EBSD Metadata to assign datatype recursively.",
       "readOnly": true,
       "options": {
         "input_width": "100%"
       },
       "propertyOrder": 3
     },
-    "files": {
-      "type": "array",
-      "title": "EBSD Files",
-      "description": "Upload one or more EBSD files. Workflow should assign datatype by extension: .ang/.ctf -> EBSD_Raw, .m -> EBSD_Scripts, .jpg/.jpeg/.png -> EBSD_Derived.",
-      "minItems": 1,
-      "items": {
-        "headerTemplate": "File {{i1}}",
-        "$ref": "#/definitions/fileUpload"
-      },
+    "uploadFolder": {
+      "title": "EBSD Folder",
+      "description": "Upload one folder containing EBSD files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in the folder, and Add EBSD Metadata to trigger recursive datatype assignment for all files in the uploaded folder.",
+      "$ref": "#/definitions/folderUpload",
       "propertyOrder": 4,
       "format": "grid"
     }
   },
   "required": [
     "lookup",
-    "files"
+    "uploadFolder"
   ]
 }

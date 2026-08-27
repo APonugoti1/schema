@@ -112,13 +112,13 @@
     "uniqueId": {
       "type": "string",
       "title": "Unique ID",
-      "description": "Auto-generated unique identifier for this EBSD upload entry using the selected IGSNs and uploaded folder.",
+      "description": "Auto-generated unique identifier for this EBSD upload entry using the selected IGSNs and uploaded folders.",
       "readOnly": true,
       "watch": {
         "igsns": "lookup",
-        "folder": "uploadFolder.folder"
+        "folders": "uploadFolders"
       },
-      "template": "EBSD_{{ebsdBatchId igsns folder}}",
+      "template": "EBSD_{{ebsdBatchId igsns folders}}",
       "options": {
         "hidden": true
       },
@@ -141,23 +141,28 @@
     "uploadNotes": {
       "type": "string",
       "title": "Supported File Types",
-      "default": "Upload one EBSD folder containing .ang, .ctf, .m, .jpg, .jpeg, and .png files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in the folder, and Add EBSD Metadata to assign datatype recursively.",
+      "default": "Upload one or more EBSD folders containing .ang, .ctf, .m, .jpg, .jpeg, and .png files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in every folder, and Add EBSD Metadata to assign datatype recursively.",
       "readOnly": true,
       "options": {
         "input_width": "100%"
       },
       "propertyOrder": 3
     },
-    "uploadFolder": {
-      "title": "EBSD Folder",
-      "description": "Upload one folder containing EBSD files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in the folder, and Add EBSD Metadata to trigger recursive datatype assignment for all files in the uploaded folder.",
-      "$ref": "#/definitions/folderUpload",
+    "uploadFolders": {
+      "title": "EBSD Folders",
+      "description": "Upload one or more folders containing EBSD files. Use Add Selected IGSNs Recursively to assign all selected IGSNs to files in every folder, and Add EBSD Metadata to trigger recursive datatype assignment for all files in the uploaded folders.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "headerTemplate": "Folder {{i1}}",
+        "$ref": "#/definitions/folderUpload"
+      },
       "propertyOrder": 4,
       "format": "grid"
     }
   },
   "required": [
     "lookup",
-    "uploadFolder"
+    "uploadFolders"
   ]
 }

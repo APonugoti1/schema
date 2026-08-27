@@ -60,6 +60,31 @@ Handlebars.registerHelper('selectedIgsnList', function (lookup) {
 });
 
 function ebsdFolderToken(folderId) {
+  if (Array.isArray(folderId)) {
+    const folderIds = folderId
+      .map((entry) => {
+        if (!entry || typeof entry.folder !== 'string') {
+          return '';
+        }
+
+        return entry.folder.trim();
+      })
+      .filter(Boolean);
+
+    if (folderIds.length === 0) {
+      return 'pending';
+    }
+
+    const firstId = folderIds[0].slice(-6);
+    const lastId = folderIds[folderIds.length - 1].slice(-6);
+
+    if (folderIds.length === 1) {
+      return `DIR_${firstId}`;
+    }
+
+    return `DIR${folderIds.length}_${firstId}_${lastId}`;
+  }
+
   if (typeof folderId !== 'string' || folderId.trim() === '') {
     return 'pending';
   }
@@ -75,7 +100,7 @@ Handlebars.registerHelper('ebsdFolderToken', function (folderId) {
   return ebsdFolderToken(folderId);
 });
 
-Handlebars.registerHelper('ebsdBatchId', function (lookup, folderId) {
+Handlebars.registerHelper('ebsdBatchId', function (lookup, folderIds) {
   const entries = Array.isArray(lookup) ? lookup : [];
   const igsns = entries
     .map((entry) => {
@@ -93,7 +118,7 @@ Handlebars.registerHelper('ebsdBatchId', function (lookup, folderId) {
       ? sanitizeSegment(igsns[0])
       : `${sanitizeSegment(igsns[0])}_M${igsns.length}`;
 
-  return `${igsnToken}_${ebsdFolderToken(folderId)}`;
+  return `${igsnToken}_${ebsdFolderToken(folderIds)}`;
 });
 
 function extractSelectedIgsns(lookup) {
@@ -121,8 +146,22 @@ function getEditorValue(editor, path, fallback) {
   }
 }
 
-function getUploadFolderId(editor) {
-  return getEditorValue(editor, 'root.uploadFolder.folder', '');
+function getUploadFolderIds(editor) {
+  const folders = getEditorValue(editor, 'root.uploadFolders', []);
+
+  if (!Array.isArray(folders)) {
+    return [];
+  }
+
+  return folders
+    .map((entry) => {
+      if (!entry || typeof entry.folder !== 'string') {
+        return '';
+      }
+
+      return entry.folder.trim();
+    })
+    .filter(Boolean);
 }
 
 function showAlert(message) {
@@ -135,12 +174,12 @@ window.JSONEditor.defaults.callbacks = window.JSONEditor.defaults.callbacks || {
 window.JSONEditor.defaults.callbacks.button = window.JSONEditor.defaults.callbacks.button || {};
 
 window.JSONEditor.defaults.callbacks.button.assignSelectedIgsnsRecursiveCB = async function (jseditor) {
-  const folderId = getUploadFolderId(jseditor);
+  const folderIds = getUploadFolderIds(jseditor);
   const lookup = getEditorValue(jseditor, 'root.lookup', []);
   const igsns = extractSelectedIgsns(lookup);
 
-  if (!folderId) {
-    showAlert('Upload an EBSD folder before assigning IGSNs.');
+  if (folderIds.length === 0) {
+    showAlert('Upload one or more EBSD folders before assigning IGSNs.');
     return;
   }
 
@@ -151,55 +190,60 @@ window.JSONEditor.defaults.callbacks.button.assignSelectedIgsnsRecursiveCB = asy
 
   const results = [];
 
-  for (const igsn of igsns) {
-    try {
-      await restRequest({
-        url: `folder/${folderId}/assign_igsn`,
-        method: 'PUT',
-        data: {
-          igsn,
-          progress: false
-        }
-      });
+  for (const folderId of folderIds) {
+    for (const igsn of igsns) {
+      try {
+        await restRequest({
+          url: `folder/${folderId}/assign_igsn`,
+          method: 'PUT',
+          data: {
+            igsn,
+            progress: false
+          }
+        });
 
-      results.push({ igsn, status: 'ok' });
-    } catch (error) {
-      results.push({
-        igsn,
-        status: 'error',
-        error: error && error.responseJSON ? error.responseJSON.message : String(error)
-      });
+        results.push({ folderId, igsn, status: 'ok' });
+      } catch (error) {
+        results.push({
+          folderId,
+          igsn,
+          status: 'error',
+          error: error && error.responseJSON ? error.responseJSON.message : String(error)
+        });
+      }
     }
   }
 
   const failures = results.filter((result) => result.status === 'error');
   if (failures.length > 0) {
-    const failedList = failures.map((result) => result.igsn).join(', ');
+    const failedList = failures.map((result) => `${result.folderId}:${result.igsn}`).join(', ');
     showAlert(`IGSN assignment finished with errors for: ${failedList}`);
     return;
   }
 
-  showAlert(`Assigned ${igsns.length} IGSN(s) recursively.`);
+  showAlert(`Assigned ${igsns.length} IGSN(s) recursively across ${folderIds.length} folder(s).`);
 };
 
 window.JSONEditor.defaults.callbacks.button.assignEbsdMetadataCB = async function (jseditor) {
-  const folderId = getUploadFolderId(jseditor);
+  const folderIds = getUploadFolderIds(jseditor);
 
-  if (!folderId) {
-    showAlert('Upload an EBSD folder before adding EBSD metadata.');
+  if (folderIds.length === 0) {
+    showAlert('Upload one or more EBSD folders before adding EBSD metadata.');
     return;
   }
 
   try {
-    await restRequest({
-      url: `folder/${folderId}/assign_ebsd_metadata`,
-      method: 'PUT',
-      data: {
-        progress: false
-      }
-    });
+    for (const folderId of folderIds) {
+      await restRequest({
+        url: `folder/${folderId}/assign_ebsd_metadata`,
+        method: 'PUT',
+        data: {
+          progress: false
+        }
+      });
+    }
 
-    showAlert('EBSD metadata assignment started successfully.');
+    showAlert(`EBSD metadata assignment started successfully for ${folderIds.length} folder(s).`);
   } catch (error) {
     const message = error && error.responseJSON ? error.responseJSON.message : String(error);
     showAlert(`Failed to add EBSD metadata: ${message}`);

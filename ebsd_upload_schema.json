@@ -26,18 +26,46 @@
           "template": "{{hid}}"
         },
         "file": {
-          "type": "string",
+          "type": "array",
           "propertyOrder": 1,
-          "title": "Upload files"
+          "title": "Upload files",
+          "description": "Stores uploaded file IDs from one or more selected folders as a flattened file list.",
+          "items": {
+            "type": "string",
+            "links": [
+              {
+                "rel": "View",
+                "title": "View",
+                "href": "/api/v1/file/{{self}}/download?contentDisposition=inline",
+                "class": "girder-file-link"
+              },
+              {
+                "rel": "Download",
+                "title": "Download",
+                "href": "/api/v1/file/{{self}}/download",
+                "download": true,
+                "class": "girder-file-link"
+              }
+            ]
+          },
+          "default": []
         },
         "button": {
-          "title": "Browse",
+          "title": "Browse or Drop Folders",
           "format": "button",
           "propertyOrder": 2,
           "options": {
             "button": {
-              "action": "button1CB",
-              "uploadFor": "file"
+              "action": "ebsdFolderUploadCB",
+              "uploadFor": "file",
+              "multiple": true,
+              "allowDirectories": true,
+              "flattenDirectoryStructure": true,
+              "inputAttributes": {
+                "multiple": true,
+                "webkitdirectory": true,
+                "directory": true
+              }
             }
           }
         }

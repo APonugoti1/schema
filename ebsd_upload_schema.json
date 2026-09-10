@@ -5,6 +5,7 @@
   "type": "object",
   "required": [
     "lookup",
+    "sampleId",
     "ebsd_id",
     "files"
   ],
@@ -73,13 +74,27 @@
     }
   },
   "properties": {
+    "sampleId": {
+      "title": "Sample ID",
+      "description": "Hidden compatibility alias for the generated EBSD identifier.",
+      "type": "string",
+      "template": "{{ebsd}}",
+      "readOnly": true,
+      "propertyOrder": 0,
+      "watch": {
+        "ebsd": "root.ebsd_id"
+      },
+      "options": {
+        "hidden": true
+      }
+    },
     "ebsd_id": {
       "title": "EBSD ID",
       "description": "Auto-generated unique identifier for the EBSD upload.",
       "type": "string",
       "template": "{{formatEbsdParamsShort lookup}}",
       "readOnly": true,
-      "propertyOrder": 0,
+      "propertyOrder": 1,
       "watch": {
         "lookup": "root.lookup"
       },
@@ -107,13 +122,13 @@
           }
         }
       },
-      "propertyOrder": 1
+      "propertyOrder": 2
     },
     "files": {
       "title": "Related files",
       "description": "Upload EBSD files for this upload. Make sure they have unique names.",
       "$ref": "#/definitions/files",
-      "propertyOrder": 2
+      "propertyOrder": 3
     }
   }
 }

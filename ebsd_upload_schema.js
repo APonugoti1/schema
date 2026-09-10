@@ -80,6 +80,7 @@ function buildEbsdUploadReference(formData) {
     return {
         formType: "ebsd",
         ebsd_id: formData.ebsd_id,
+        sampleId: formData.sampleId || formData.ebsd_id,
         lookup: Array.isArray(formData.lookup) ? formData.lookup : [],
         type: "ebsd"
     };

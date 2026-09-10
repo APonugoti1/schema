@@ -51,12 +51,12 @@
           "default": []
         },
         "button": {
-          "title": "Browse or Drop Folders",
+          "title": "Browse",
           "format": "button",
           "propertyOrder": 2,
           "options": {
             "button": {
-              "action": "ebsdFolderUploadCB",
+              "action": "button1CB",
               "uploadFor": "file",
               "multiple": true,
               "allowDirectories": true,

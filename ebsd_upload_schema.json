@@ -10,8 +10,8 @@
     "files"
   ],
   "definitions": {
-    "files": {
-      "$id": "files",
+    "folderUpload": {
+      "$id": "folderUpload",
       "type": "object",
       "format": "grid",
       "properties": {
@@ -70,6 +70,16 @@
             }
           }
         }
+      }
+    },
+    "files": {
+      "$id": "files",
+      "type": "array",
+      "minItems": 1,
+      "format": "tabs",
+      "items": {
+        "headerTemplate": "Folder {{i1}}",
+        "$ref": "#/definitions/folderUpload"
       }
     }
   },

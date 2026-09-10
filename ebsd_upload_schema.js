@@ -15,29 +15,27 @@ window.JSONEditor.defaults.callbacks.autocomplete = {
     },
     'render_deposition': function (editor, result, props) {
         try {
-          const localId = result.metadata.alternateIdentifiers.find(
-              (id) => id.alternateIdentifierType.toLowerCase() === 'local'
-          );
-          return `<li ${props}> ${result.igsn} (localId: ${localId.alternateIdentifier})</li>`;
+            const localId = result.metadata.alternateIdentifiers.find(
+                (id) => id.alternateIdentifierType.toLowerCase() === 'local'
+            );
+            return `<li ${props}> ${result.igsn} (localId: ${localId.alternateIdentifier})</li>`;
         } catch (e) {
-          return `<li ${props}> ${result.igsn} (title: ${result.metadata.titles[0]['title']})</li>`;
+            return `<li ${props}> ${result.igsn} (title: ${result.metadata.titles[0]['title']})</li>`;
         }
     },
     'get_deposition_value': function (editor, result) {
         try {
-          const localId = result.metadata.alternateIdentifiers.find(
-            (id) => id.alternateIdentifierType.toLowerCase() === 'local'
-          );
-          return `${result.igsn}`;
+            result.metadata.alternateIdentifiers.find(
+                (id) => id.alternateIdentifierType.toLowerCase() === 'local'
+            );
+            return `${result.igsn}`;
         } catch (e) {
-          return `${result.igsn}`;
+            return `${result.igsn}`;
         }
     }
 };
 
 // Small synchronous, deterministic hash (FNV-1a, 32-bit) rendered as base36.
-// Used to guarantee ID uniqueness across the full selected IGSN set while
-// keeping the human-readable portion short.
 function shortHash(str) {
     let h = 0x811c9dc5;
     for (let i = 0; i < str.length; i++) {
@@ -48,7 +46,7 @@ function shortHash(str) {
 }
 
 function sanitizeSegment(value) {
-    return value.replace(/[^A-Za-z0-9_-]/g, '_');
+    return String(value || '').replace(/[^A-Za-z0-9_-]/g, '_');
 }
 
 Handlebars.registerHelper('formatEbsdParamsShort', function (lookup) {
@@ -56,7 +54,7 @@ Handlebars.registerHelper('formatEbsdParamsShort', function (lookup) {
         return '';
     }
 
-    const igsns = lookup.map(entry => {
+    const igsns = lookup.map((entry) => {
         if (typeof entry !== 'string') {
             return '';
         }
@@ -75,26 +73,35 @@ Handlebars.registerHelper('formatEbsdParamsShort', function (lookup) {
     return `EBSD_${readable}_${shortHash(canonical)}`;
 });
 
-// EBSD upload marker - attach this to the upload reference
+function getFirstIgsn(lookup) {
+    if (!Array.isArray(lookup) || lookup.length === 0) return null;
+    const first = lookup[0];
+    if (typeof first !== 'string') return null;
+    const igsn = first.split(' - ')[0].trim();
+    return igsn || null;
+}
+
+// EBSD upload marker - backend upload hook reads this "reference"
 function buildEbsdUploadReference(formData) {
     return {
-        formType: "ebsd",
+        formType: 'ebsd',
+        ebsd: true,
+        igsn: getFirstIgsn(formData.lookup),
         ebsd_id: formData.ebsd_id,
         sampleId: formData.sampleId || formData.ebsd_id,
         lookup: Array.isArray(formData.lookup) ? formData.lookup : [],
-        type: "ebsd"
+        type: 'ebsd'
     };
 }
 
-// Example usage in your upload callback:
-// Accepts a single File, FileList, or array of Files and uploads them one by one.
+// Accepts single File, FileList, or array of Files.
 function submitEbsdUpload(formData, files, itemId) {
     const ref = buildEbsdUploadReference(formData);
     const fileList = Array.isArray(files)
         ? files
         : (files && typeof files.length === 'number' ? Array.from(files) : [files]);
 
-    const uploads = fileList.filter(Boolean).map(file => {
+    const uploads = fileList.filter(Boolean).map((file) => {
         return restRequest({
             url: 'file',
             method: 'POST',

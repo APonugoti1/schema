@@ -1,0 +1,188 @@
+{
+  "title": "Rotating beam fatigue test",
+  "description": "Rotating beam fatigue test data for cylindrical samples",
+  "type": "object",
+  "properties": {
+    "sampleNameColloquial": {
+      "type": "string",
+      "title": "SampleName_colloquial",
+      "description": "Colloquial name of the sample",
+      "propertyOrder": 0,
+      "options": {
+        "grid_columns": 6
+      }
+    },
+    "localId": {
+      "type": "string",
+      "title": "Local ID",
+      "description": "Local identifier for the sample",
+      "propertyOrder": 1,
+      "options": {
+        "grid_columns": 6
+      }
+    },
+    "lookup": {
+      "type": "string",
+      "title": "IGSN",
+      "description": "Lookup for the IGSN of the sample",
+      "format": "autocomplete",
+      "options": {
+        "autocomplete": {
+          "search": "search_deposition",
+          "renderResult": "render_deposition",
+          "getResultValue": "get_deposition_value",
+          "autoSelect": true,
+          "debounceTime": 500
+        },
+        "grid_columns": 6
+      },
+      "propertyOrder": 2
+    },
+    "diameterMm": {
+      "type": "number",
+      "title": "Diameter (mm)",
+      "description": "Enter the cylindrical sample diameter in millimeters (mm).",
+      "minimum": 0,
+      "propertyOrder": 3,
+      "options": {
+        "grid_columns": 6
+      }
+    },
+    "tests": {
+      "type": "array",
+      "title": "Tests",
+      "description": "Rotating beam fatigue test measurements",
+      "format": "tabs",
+      "propertyOrder": 4,
+      "items": {
+        "type": "object",
+        "title": "Test",
+        "format": "grid-strict",
+        "properties": {
+          "testLocation": {
+            "type": "string",
+            "title": "TestLocation",
+            "description": "Location associated with the test",
+            "propertyOrder": 0,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "machine": {
+            "type": "string",
+            "title": "Machine",
+            "description": "Machine used for the test",
+            "propertyOrder": 1,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "testNumber": {
+            "type": "integer",
+            "title": "TestNumber",
+            "description": "Test number",
+            "propertyOrder": 2,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "testDate": {
+            "type": "string",
+            "format": "date",
+            "title": "DateTested",
+            "description": "Date of the test",
+            "propertyOrder": 3,
+            "options": {
+              "grid_columns": 4,
+              "flatpickr": {}
+            }
+          },
+          "frequencyHz": {
+            "type": "number",
+            "title": "Frequency_Hz",
+            "description": "Enter the test frequency in hertz (Hz).",
+            "minimum": 0,
+            "propertyOrder": 4,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "stressAmplitudeKsi": {
+            "type": "number",
+            "title": "StressAmplitude_KSI",
+            "description": "Enter the stress amplitude in kilopounds per square inch (ksi).",
+            "propertyOrder": 5,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "stressAmplitudeMpa": {
+            "type": "number",
+            "title": "StressAmplitude_MPa",
+            "description": "Enter the stress amplitude in megapascals (MPa).",
+            "propertyOrder": 6,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "rRatio": {
+            "type": "number",
+            "title": "R-Ratio",
+            "description": "Ratio of minimum stress to maximum stress (dimensionless; no units).",
+            "propertyOrder": 7,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "cyclesToFailure": {
+            "type": "integer",
+            "title": "CyclesToFailure",
+            "description": "Enter the number of cycles completed before failure or runout (cycles).",
+            "minimum": 0,
+            "propertyOrder": 8,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "runout": {
+            "type": "boolean",
+            "title": "Runout",
+            "description": "Whether the test ended as a runout",
+            "propertyOrder": 9,
+            "options": {
+              "grid_columns": 4
+            }
+          },
+          "imaged": {
+            "type": "string",
+            "title": "Imaged",
+            "description": "Whether the sample was imaged",
+            "enum": [
+              "Yes",
+              "No",
+              "DNF",
+              "Reimage"
+            ],
+            "propertyOrder": 10,
+            "options": {
+              "grid_columns": 4
+            }
+          }
+        },
+        "required": [
+          "testNumber",
+          "stressAmplitudeKsi",
+          "stressAmplitudeMpa",
+          "rRatio",
+          "cyclesToFailure",
+          "runout"
+        ]
+      }
+    }
+  },
+  "required": [
+    "lookup",
+    "diameterMm",
+    "tests"
+  ]
+}

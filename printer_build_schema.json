@@ -540,7 +540,8 @@
           "type": "string",
           "enum": [
             "Ti-6Al-4V",
-            "carbon steel"
+            "carbon steel",
+            "stainless steel"
           ],
           "default": "Ti-6Al-4V",
           "propertyOrder": 0

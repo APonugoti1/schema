@@ -1,0 +1,177 @@
+{
+  "title": "Tensile test",
+  "description": "Tensile test data for cylindrical (round) coupons",
+  "type": "object",
+  "definitions": {
+    "files": {
+      "$id": "files",
+      "type": "object",
+      "format": "grid",
+      "properties": {
+        "targetPath": {
+          "type": "string",
+          "title": "Target Path",
+          "watch": {
+            "igsn": "root.lookup"
+          },
+          "options": {
+            "hidden": true
+          },
+          "template": "{{igsn}}"
+        },
+        "file": {
+          "type": "string",
+          "propertyOrder": 1,
+          "title": "Upload files"
+        },
+        "button": {
+          "title": "Browse",
+          "format": "button",
+          "propertyOrder": 2,
+          "options": {
+            "button": {
+              "action": "button1CB",
+              "uploadFor": "file"
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "lookup": {
+      "type": "string",
+      "title": "IGSN",
+      "description": "Lookup for the IGSN of the sample",
+      "format": "autocomplete",
+      "options": {
+        "autocomplete": {
+          "search": "search_deposition",
+          "renderResult": "render_deposition",
+          "getResultValue": "get_deposition_value",
+          "autoSelect": true,
+          "debounceTime": 500
+        },
+        "grid_columns": 6
+      },
+      "propertyOrder": 0
+    },
+    "specimen": {
+      "type": "string",
+      "title": "Specimen",
+      "description": "Specimen number",
+      "propertyOrder": 1,
+      "options": {
+        "grid_columns": 3
+      }
+    },
+    "aplId": {
+      "type": "string",
+      "title": "APL ID",
+      "description": "APL identifier for the sample (e.g. T1)",
+      "propertyOrder": 2,
+      "options": {
+        "grid_columns": 3
+      }
+    },
+    "diameterIn": {
+      "type": "number",
+      "title": "Diameter (in)",
+      "description": "Diameter of the round coupon in inches (in).",
+      "minimum": 0,
+      "propertyOrder": 3,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "areaMm2": {
+      "type": "number",
+      "title": "Area (mm²)",
+      "description": "Cross-sectional area in square millimeters (mm²). Calculated from the diameter.",
+      "readOnly": true,
+      "template": "{{circleArea d}}",
+      "watch": {
+        "d": "root.diameterIn"
+      },
+      "propertyOrder": 4,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "gaugeLengthIn": {
+      "type": "number",
+      "title": "Strain 1 gauge length (in)",
+      "description": "Strain 1 gauge length in inches (in).",
+      "minimum": 0,
+      "propertyOrder": 5,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "displacementRateInPerMin": {
+      "type": "number",
+      "title": "Displacement Rate (in/min)",
+      "description": "Crosshead displacement rate in inches per minute (in/min).",
+      "minimum": 0,
+      "propertyOrder": 6,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "modulusGpa": {
+      "type": "number",
+      "title": "Modulus (GPa)",
+      "description": "Elastic modulus in gigapascals (GPa).",
+      "minimum": 0,
+      "propertyOrder": 7,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "yieldGpa": {
+      "type": "number",
+      "title": "0.2% Offset Yield (GPa)",
+      "description": "0.2% offset yield strength in gigapascals (GPa).",
+      "minimum": 0,
+      "propertyOrder": 8,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "utsGpa": {
+      "type": "number",
+      "title": "UTS (GPa)",
+      "description": "Ultimate tensile strength in gigapascals (GPa).",
+      "minimum": 0,
+      "propertyOrder": 9,
+      "options": {
+        "grid_columns": 4
+      }
+    },
+    "comments": {
+      "type": "string",
+      "title": "Comments",
+      "description": "Additional notes (e.g. round coupons ~33mm gauge)",
+      "propertyOrder": 10,
+      "options": {
+        "grid_columns": 12
+      }
+    },
+    "files": {
+      "title": "Raw data files",
+      "description": "Upload raw test exports (Time (s), Displacement (in), Force (lbf), Strain 1 (%), Stress (MPa)). Make sure they have unique names.",
+      "$ref": "#/definitions/files",
+      "propertyOrder": 11
+    }
+  },
+  "required": [
+    "lookup",
+    "specimen",
+    "diameterIn",
+    "gaugeLengthIn",
+    "displacementRateInPerMin",
+    "modulusGpa",
+    "yieldGpa",
+    "utsGpa"
+  ]
+}
